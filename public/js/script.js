@@ -446,6 +446,8 @@ const app = Vue.createApp({
 					});
 					that.users = data;
 					that.ishodusers = data;
+				}else{
+					that.loginVis=true;
 				}
 			});
 		fetch('/getuser')
