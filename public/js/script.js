@@ -220,7 +220,8 @@ const app = Vue.createApp({
 				body: JSON.stringify(account)
 			}).then(res =>  res.ok ? res.json():res.text())
 			.then(function(data){
-				if (data =='errlog') alert('Неправильный логин или пароль!'); 
+				if (data =='errlog') {alert('Неправильный логин или пароль!');
+				that.loginVis=true; }
 				else {
 					console.log(that.currentUser = data[0]);
 					
