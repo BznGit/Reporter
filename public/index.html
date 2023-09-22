@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Reporter</title>
+		<link rel="stylesheet" href="./css/style.css">
+		<link rel="icon" type="image/x-icon" href="./img/reporter1.png">
+		<script src="./lib/vue.js"></script>
+		<script src="./lib/VueRouter.js"></script>
+		<script src="./lib/node_modules/socket.io/client-dist/socket.io.js "></script>
+		<script src="./lib/jquery-3.2.1.min.js"></script>
+		<script src="./lib/cookie.min.js"></script>
+		<script src="./lib/FileSaver.js"></script>
+	</head>
+
+	<body>
+		<div id="app">
+			<div class=mainapp>
+				<login @close-login="loginVis=false" @let-sigin="signin" @let-exit="letexit"
+					@open-reg="regVis=!regVis; loginVis=!loginVis" v-bind:loginvis="loginVis"
+					v-bind:curruser="currentUser">
+				</login>
+				<registr @close-reg="regVis=false" @let-reg="letReg" v-bind:regvis="regVis">
+				</registr>
+				<about @close-about="abtVis=false" v-if="abtVis" v-bind:abtVis="abtVis">
+				</about>
+
+				<div class="head">
+					<div class="head-users" id="contVisId" @click="openContacts" v-if="currentUser!==null">
+						<img class="head-users-img" src="./img/contacts.png">
+					</div>
+					<div id="backId" class="head-users-back" @click="closeContacts">
+						<img class="head-back-img" src="./img/back.png">
+					</div>
+					<div class="head-reporter">
+						<h3>Reporter</h3>
+					</div>
+
+					<div class="head-contact" @click="sorty" title="Текущий пользователь">
+						<h3 v-html="currentName"></h3>
+
+					</div>
+					<div @click="sound=!sound" class="head-search" title="Отключить звук">
+						<img class="head-search-img" v-bind:src="soundstat">
+					</div>
+					<div class="head-menu" @click="menuVis=!menuVis" title="Меню">
+						<img class="head-menu-img" src="./img/menu2.png">
+						<men @open-log="loginVis=!loginVis" @open-about="abtVis=true" @del-hist="deleteHistory"
+							@del-acc="deleteAccount" v-bind:menuvis="menuVis" v-bind:curruser="currentUser"
+							v-bind:currrecept="currentReceptor">
+						</men>
+
+					</div>
+				</div>
+				<div class="content">
+					<div id="contactsId" class="contacts">
+						<contact @reposted="reposted" @search="search" v-bind:users="users"
+							v-bind:currmess="currentRepostMess" v-bind:curuse="currentUser"
+							@choose-receptor="chooseReceptor"   @close-repost="closeRepost"  ></contact>
+					</div>
+					<div id="lentasenderId"  class="lenta-sender">
+						<div class="lenta" @scroll="onScroll" id="lentaId">
+							<messag v-if="currentUser!==null" v-bind:users="users" v-bind:sound="sound"
+								v-bind:history="history" v-bind:currentUser="currentUser" @add-hist="addHist"
+								@new-mess="newmess" @delete-mess="deletemess" v-bind:currentreceptor="currentReceptor"
+								@choose-receptor="chooseReceptor" @open-fl="repost">
+							</messag>
+							
+						</div>
+						<div v-if="currentUser!==null" class="sender">
+								<div id="downer" v-if="scrollVis"  @click="letDown">
+									<img class="downer-img" src="./img/down.png">
+								</div>
+							<div class="sender-item avat1">
+							
+								<span id="avatar1" v-html="curUsSymb"></span>
+							</div>
+							<div class="sender-item textarea">
+								<img src="./img/preloader1.gif" class="preloder-img" v-if="preloder">
+								<textarea id="message" @keyup.enter="submit" type="text" placeholder="Сообщение..."
+									class="textarea">
+
+								</textarea>
+								<div v-if="fileVis" class="sender-item-file">
+									<div class="sender-item-file-col">
+										<div class="sender-item-file-names" id="flname" v-for="item in fileName" v-bind:key="item" >
+											<p>{{item}}</p>
+										</div>
+									</div>
+									<div class="sender-item-img">
+										<img class="file-img" @click="cancelFile" src="./img/close.png">
+
+									</div>
+								</div>
+							</div>
+							<div class="sender-item attach">
+								<img class="sender-img" @click="addFile" src="./img/add.png" title="Прикрепить файл">
+							</div>
+							<div class="sender-item send">
+								<div class="sender-send">
+									<img class="sender-img" @click="submit" src="./img/send.png" title="Отправить">
+								</div>
+								<div class="sender-all">
+									<img class="sender-img" @click="sendToAll=!sendToAll" v-bind:src="allstat" title="Разослать всем">
+								</div>
+							</div>
+							<div class="sender-item avat2">
+								<span id="avatar2" v-html="curRecSymb"></span>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="footer">
+					<h5>bzn 2022</5>
+				</div>
+			</div>
+		</div>
+		<script src="./js/script.js"></script>
+		<script>
+		
+		</script>
+	</body>
+
+</html>
