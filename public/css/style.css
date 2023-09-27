@@ -477,13 +477,14 @@
     margin-top: 0px;
     align-content: center;
     cursor: pointer;
-    overflow-wrap: break-word;
+    overflow-wrap: anywhere;
     font-size: smaller; 
 }
 .mess-file>p{
     margin-top:auto;
     margin-bottom: auto;
     margin-left: 5px;
+    
 }
 .mess-file:hover{
     text-decoration-line: underline;
