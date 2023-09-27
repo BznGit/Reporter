@@ -483,13 +483,16 @@
 .mess-file>p{
     margin-top:auto;
     margin-bottom: auto;
+    margin-left: 5px;
 }
 .mess-file:hover{
     text-decoration-line: underline;
 }
 .mess-file>img{
-    align-items: center;
-    width: 30px;
+    display: flex;
+    justify-self: start;
+    align-self: center;
+    height: 30px;
 }
 .mess-file>img:hover{
     transform: scale(1.2);
@@ -642,7 +645,6 @@
     height: 15px;
     width: 15px;
  }
-
 
  .file-img:hover{
      transform: scale(1.2);
