@@ -42,7 +42,7 @@
 						<h3 v-html="currentName"></h3>
 
 					</div>
-					<div @click="sound=!sound" class="head-search" title="Отключить звук">
+					<div @click="soundHandler" class="head-search" title="Отключить звук">
 						<img class="head-search-img" v-bind:src="soundstat">
 					</div>
 					<div class="head-menu" @click="menuVis=!menuVis" title="Меню">
@@ -114,7 +114,7 @@
 
 				</div>
 				<div class="footer">
-					<h5>bzn 2022</5>
+					<span>© 2021-2024</span>
 				</div>
 			</div>
 		</div>

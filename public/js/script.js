@@ -35,6 +35,11 @@ const app = Vue.createApp({
 		}
 	},
 	methods:{
+		soundHandler(){
+			console.log('----->',this.sound)
+			this.sound = !this.sound;
+			localStorage.setItem('sound', this.sound)
+		},
 		search(src){
 			if (src.length == 0) this.users = this.ishodusers;
 			let arr = this.users.filter(function(item){
@@ -378,10 +383,8 @@ const app = Vue.createApp({
 			let object = {
 				senderId:  sendId,
 				senderSokId: socket.id,	
-			};
-			
-		}, 
-
+			};			
+		},
 	},
 	computed:{
 		soundstat(){
@@ -449,6 +452,9 @@ const app = Vue.createApp({
 		},
 	}, 
 	mounted(){
+			
+				
+	
 		that = this;
 		fetch('/users')
 		.then(res =>  res.ok ? res.json():res.text())
@@ -481,8 +487,8 @@ const app = Vue.createApp({
 			});	
 
 	},
-	beforeDestroy(){
-
+	created(){
+		console.log('created', this.sound )
 	},
 	
 	
@@ -985,14 +991,14 @@ app.component('messag',{
 						<img class="log-img" @click="close" src="./img/close.png">
 					</div>
 					<div class="log-inputs">
-						<h1 style="font-family: Aharoni">22ks</h1>
+						<h1 style="font-family: Aharoni"></h1>
 						<br>
 						<br>
-						<h3>22Kaf-Soft</h3>
-						<h3>2021</h3>
+						<h3>Bzn-Soft</h3>
+						<h3>2024</h3>
 						<br>
 						<br>				
-						<h4>Version 1.0.4 </h4>
+						<h4>Version 1.0.6 </h4>
 					<div>					
 				</div>
 				`,
