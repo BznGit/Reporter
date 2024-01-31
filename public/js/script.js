@@ -838,7 +838,7 @@ app.component('messag',{
 	template: `	<div id="contClsId" class="closed">
 					<img class="log-img" @click="close" src="./img/closeBlue.png">
 				</div>
-				<input class="contacts-search" id="search" type="text"  placeholder="Поиск..." v-on:input="searching">
+				<input class="contacts-search" id="search"   placeholder="Поиск..." v-on:input="searching">
 				<div v-for="item in users"  v-bind:id="item._id" v-bind:key="item" @click="chooseReceptor" @mouseover="hover" @mouseout="hoverout" class="contacts-item">
 					<div  v-bind:id="item._id" class="contacts-item-name">
 						{{item.name}}
