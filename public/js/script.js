@@ -23,7 +23,7 @@ const app = Vue.createApp({
 			inputFiles: null,
 			contVis:false,
 			backVis:false,
-			sound: true,
+			sound: null,
 			history:new Array(),
 			preloder: false,
 			aboutVis: false,
@@ -36,7 +36,6 @@ const app = Vue.createApp({
 	},
 	methods:{
 		soundHandler(){
-			console.log('----->',this.sound)
 			this.sound = !this.sound;
 			localStorage.setItem('sound', this.sound)
 		},
@@ -372,7 +371,7 @@ const app = Vue.createApp({
 		}, 
 
 		onScroll(e){
-			if (lentaId.scrollTop == lentaId.scrollHeight-lentaId.offsetHeight) this.scrollVis = false; else this.scrollVis = true;
+			if (Math.trunc(lentaId.scrollTop) == Math.trunc(lentaId.scrollHeight-lentaId.offsetHeight)) this.scrollVis = false; else this.scrollVis = true;
 		}	
 	},
 	watch:{
@@ -388,8 +387,9 @@ const app = Vue.createApp({
 	},
 	computed:{
 		soundstat(){
-			if (this.sound) return src="./img/soundOn.png"; else  return src="./img/soundOff.png"
+			if (this.sound)  return  src="./img/soundOn.png"; else  return src="./img/soundOff.png";
 		},
+
 		allstat(){
 			if (this.sendToAll) return src="./img/allOn.png"; else  return src="./img/allOff.png"
 		},
@@ -452,9 +452,7 @@ const app = Vue.createApp({
 		},
 	}, 
 	mounted(){
-			
-				
-	
+		this.sound =  JSON.parse(localStorage.getItem('sound'))
 		that = this;
 		fetch('/users')
 		.then(res =>  res.ok ? res.json():res.text())
@@ -487,11 +485,7 @@ const app = Vue.createApp({
 			});	
 
 	},
-	created(){
-		console.log('created', this.sound )
-	},
-	
-	
+
 
 });
 app.component('messag',{
@@ -506,7 +500,8 @@ app.component('messag',{
 		}
 	},
 	props:['users', 'currentUser','sound', 'history', 'currentreceptor' ],
-	template: `
+	emits:['new-mess',  'delete-mess', 'open-fl', ],
+	template: `<div>
 				<div  v-for="item in history" v-bind:key="item" v-bind:class=item.class>
 					<div class="mess-name">
 						<h4>{{item.person}}</h4>
@@ -528,9 +523,10 @@ app.component('messag',{
 							<img src="./img/repost.png" class="sender-img" @click="repost">
 						</div>
 						<div class="mess-delete">
-							<img src="./img/delete.png"class="sender-img" @click="delmess"  >
+							<img src="./img/delete.png" class="sender-img" @click="delmess">
 						</div>
 					</div>
+				</div>
 				</div>
 				`,
 	created(){
@@ -708,6 +704,7 @@ app.component('messag',{
  });
  app.component('men',{
 	props:['menuvis', 'curruser', 'currrecept'],
+	emits:['close-open', 'del-hist', 'del-acc','open-about' ],
 	template: `
 				<div  v-if="menuvis" class="head-menu-list">
 					<h4 @click="openlog">{{tet}}</h4>
@@ -742,22 +739,22 @@ app.component('messag',{
 
  app.component('login',{
 	props:['loginvis', 'curruser'],
-
+	emits:['close-login', 'let-sigin', 'let-exit', 'open-reg'],
 	template: `
 			<div v-if="loginvis" class="fon"></div>	
 				<form>
 					<div v-if="loginvis" class="log" >
 						<div class="log-cont-img">
-							<img class="log-img" @click="close"src="./img/close.png">
+							<img class="log-img" @click="close" src="./img/close.png">
 						</div>
 						<h3 class="vhod">Вход</h3>
 						<div class="log-inputs">
-							<input  id="personlog" type="text" @keyup.enter="enter" v-if="curruser==null" placeholder="Введите имя" >
-							<input type="password" id="pass" type="text" @keyup.enter="enter" v-if="curruser==null "placeholder="Введите пароль"  >
+							<input  id="personlog" type="text" @keyup.enter="enter" v-if="curruser==null" placeholder="Введите имя">
+							<input type="password" id="pass"  @keyup.enter="enter" v-if="curruser==null" placeholder="Введите пароль">
 							<button @click="enter" v-if="curruser==null">Войти</button>
-							<button @click="exit" v-if="curruser!==null" >Выйти</button>
+							<button @click="exit" v-if="curruser!==null">Выйти</button>
 							<button @click="openReg" v-if="curruser==null">Регистрация</button>
-						<div>					
+						</div>					
 					</div>
 				</form>
 			
@@ -785,6 +782,7 @@ app.component('messag',{
 
  app.component('registr',{
 	props:['regvis'],
+	emits:['close-reg'],
 	template: `<form>
 					<div v-if="regvis" class="fon"></div>	
 					<div v-if="regvis" class="log">	
@@ -794,10 +792,10 @@ app.component('messag',{
 						<h3 class="vhod">Регистрация</h3>
 						<div class="log-inputs">
 							<input  id="personreg" type="text"  placeholder="Введите имя" >
-							<input type="password" id="pass1" type="text"v-if="currentUser==null" placeholder="Введите пароль" >
-							<input type="password" id="pass2" type="text"v-if="currentUser==null" placeholder="Подтвердите пароль" >
+							<input type="password" id="pass1" v-if="currentUser==null" placeholder="Введите пароль" >
+							<input type="password" id="pass2"  v-if="currentUser==null" placeholder="Подтвердите пароль" >
 							<button @click="registration" v-if="currentUser==null">Войти</button>		
-						<div>				
+						</div>				
 					</div>
 				</form>	
 				`,
@@ -828,11 +826,12 @@ app.component('messag',{
 
  app.component('contact',{
 	props:['users', 'newMessage','curuse','currentReceptor', 'currmess', 'closeRepostVis'],
+	emits:['close-repost', 'search', 'message', 'choose-receptor','reposted'],
 	data(){
 		return{
 			lastContact: null,
 			activeUsers:null,
-			closeVis: false
+		
 			
 		}
 	},
@@ -984,7 +983,7 @@ app.component('messag',{
  });
 
  app.component('about',{
-	
+	emits:['close-about'],
 	template: `
 				<div class="log">
 					<div class="log-cont-img">
@@ -999,7 +998,7 @@ app.component('messag',{
 						<br>
 						<br>				
 						<h4>Version 1.0.6 </h4>
-					<div>					
+					</div>					
 				</div>
 				`,
 	methods:{
