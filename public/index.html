@@ -37,10 +37,11 @@
 					<div class="head-reporter">
 						<h3>Reporter</h3>
 					</div>
-
 					<div class="head-contact" @click="sorty" title="Текущий пользователь">
 						<h3 v-html="currentName"></h3>
-
+					</div>
+					<div class="head-search" @click="favoriteHandler" title="Показать избранное">
+						<img class="head-search-img" v-bind:src="favoriteStat">
 					</div>
 					<div @click="soundHandler" class="head-search" title="Отключить звук">
 						<img class="head-search-img" v-bind:src="soundstat">
@@ -48,8 +49,8 @@
 					<div class="head-menu" @click="menuVis=!menuVis" title="Меню">
 						<img class="head-menu-img" src="./img/menu2.png">
 						<men @open-log="loginVis=!loginVis" @open-about="abtVis=true" @del-hist="deleteHistory"
-							@del-acc="deleteAccount" v-bind:menuvis="menuVis" v-bind:curruser="currentUser"
-							v-bind:currrecept="currentReceptor">
+							@del-acc="deleteAccount" @favorite-add="favoriteAdd" v-bind:menuvis="menuVis" v-bind:curruser="currentUser"
+							v-bind:currrecept="currentReceptor" v-bind:existfav="existFav" >
 						</men>
 
 					</div>

@@ -31,10 +31,31 @@ const app = Vue.createApp({
 			currentRepostMess: null,
 			scrollVis: false,
 			closeRepostVis: false,
+			favorite: false,
+			existFav: false,
 				
 		}
 	},
 	methods:{
+		favoriteAdd(newUserFav){
+			this.currentUser  = newUserFav;
+			fetch('/setfavorite', {
+				method:'POST',
+				headers: {
+					'Content-Type': 'application/json;charset=utf-8'
+				  },
+				body: JSON.stringify(newUserFav)
+			}).then(res => res.text())
+			.then(data=>{
+				//location.reload();
+				//alert(data);
+			});
+
+		},
+		favoriteHandler(){
+			this.favorite = !this.favorite;
+			localStorage.setItem('favorite', this.favorite);
+		},
 		soundHandler(){
 			this.sound = !this.sound;
 			localStorage.setItem('sound', this.sound)
@@ -51,7 +72,7 @@ const app = Vue.createApp({
 		sorty(){
 			let ass = new Array();
 			ass=this.users;
-			ass.sort((a, b)=>a.name -b.name);
+			ass.sort((a, b)=>a.name - b.name);
 		},
 		repost(messId){
 			console.log(close);
@@ -300,7 +321,8 @@ const app = Vue.createApp({
 			that=this;	
 			that.history=[];
 			this.currentReceptor = this.users.find(item=>item._id == receptor);
-			//console.log('>>', this.currentReceptor.history);
+			this.existFav = this.currentUser.favorite.find(item=>item==this.currentReceptor._id)
+			console.log('>>', this.currentReceptor);
 			var  histQuery ={
 				from: this.currentUser._id,
 				who: this.currentReceptor._id
@@ -386,6 +408,9 @@ const app = Vue.createApp({
 		},
 	},
 	computed:{
+		favoriteStat(){
+			if (this.favorite)  return  src="./img/offFavorite.png"; else  return src="./img/onFavorite.png";
+		},
 		soundstat(){
 			if (this.sound)  return  src="./img/soundOn.png"; else  return src="./img/soundOff.png";
 		},
@@ -452,7 +477,8 @@ const app = Vue.createApp({
 		},
 	}, 
 	mounted(){
-		this.sound =  JSON.parse(localStorage.getItem('sound'))
+		this.sound =  JSON.parse(localStorage.getItem('sound'));
+		this.favorite =  JSON.parse(localStorage.getItem('favorite'));
 		that = this;
 		fetch('/users')
 		.then(res =>  res.ok ? res.json():res.text())
@@ -469,6 +495,7 @@ const app = Vue.createApp({
 						return 0;
 					});
 					that.users = data;
+					
 					that.ishodusers = data;
 				}else{
 					that.loginVis=true;
@@ -479,7 +506,7 @@ const app = Vue.createApp({
 			.then(function(data){
 				if (data !=='errlog') {
 					that.currentUser = data;
-					//console.log(that.currentUser)
+					console.log('------->',that.currentUser)
 					
 				}
 			});	
@@ -703,17 +730,28 @@ app.component('messag',{
 	
  });
  app.component('men',{
-	props:['menuvis', 'curruser', 'currrecept'],
+	props:['menuvis', 'curruser', 'currrecept', 'existfav'],
 	emits:['close-open', 'del-hist', 'del-acc','open-about' ],
 	template: `
 				<div  v-if="menuvis" class="head-menu-list">
 					<h4 @click="openlog">{{tet}}</h4>
+					<h4 @click="favoriteAdd" v-if="!existfav">Добавить в избранное</h4>
+					<h4 @click="favoriteHandler" v-if="existfav">Удалить из избранного</h4>
 					<h4 @click="delHist" v-if="currrecept">Отчистить историю</h4>
 					<h4 @click="delAcc" v-if="curruser">Удалить аккаунт</h4>
 					<h4 @click="openabout">О нас</h4>				
 				</div>
 				`,
 	methods:{
+		favoriteAdd(){
+			console.log('1>', this.curruser)
+			if (!this.curruser.hasOwnProperty('favorite')) this.curruser.favorite = [];
+			let exist = this.curruser.favorite.find(item=>item==this.currrecept._id)
+			if(exist) alert('У Вас он уже жобавден!');
+			 this.curruser.favorite.push(this.currrecept._id)
+			console.log('2>',this.curruser)
+			this.$emit('favorite-add', this.curruser );
+		},
 		openlog(){
 			this.$emit('open-log');
 		},

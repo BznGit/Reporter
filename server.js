@@ -68,6 +68,7 @@ app.get('/getuser', function(reg, res, next){
 		var collection = db.collection("users");
 		collection.find({_id:o_id }).toArray((err, results)=>{
 			if (results.length!==0){
+				results.forEach(item=>delete item.password)// удаление паролей
 				res.send(JSON.stringify(results[0]));
 				res.end();
 				dbs.close();
@@ -225,7 +226,6 @@ app.post('/savehist', function(reg, res, next){
 
 
 app.post('/delmess', function(reg, res, next){
-	
 	var delMess = reg.body;
 	var ObjectID = require('mongodb').ObjectID;
 	var o_id = new ObjectID(delMess.id); 
@@ -246,17 +246,30 @@ app.post('/delmess', function(reg, res, next){
 				
 			});
 		}		
-
-
 		dbs.close();
-	
-
-		
 	});
-	
 	res.send("Сообщение удалено!");
 	res.end();
-	
+});
+
+app.post('/setfavorite', function(reg, res, next){
+	var user = reg.body;
+	var ObjectID = require('mongodb').ObjectID;
+	var o_id = new ObjectID(user._id); 
+	console.log(user)
+	//var mongoClient = require('mongodb').MongoClient;
+	var url = 'mongodb://localhost:27017';
+	mongoClient.connect(url, function(err, dbs){
+		var db = dbs.db('messeger');
+		var collection = db.collection("users");
+		console.log(o_id);
+		collection.updateOne({_id: o_id},{$set:{favorite: user.favorite}},(err, res)=>{	
+			if (err) console.log('deleted  mess err:',err);
+		});
+		dbs.close();
+	});
+	res.send("Сообщение удалено!");
+	res.end();
 });
 
 
