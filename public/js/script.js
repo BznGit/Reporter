@@ -23,7 +23,7 @@ const app = Vue.createApp({
 			inputFiles: null,
 			contVis:false,
 			backVis:false,
-			sound: null,
+			sound: true,
 			history:new Array(),
 			preloder: false,
 			aboutVis: false,
@@ -33,13 +33,18 @@ const app = Vue.createApp({
 			closeRepostVis: false,
 			favorite: false,
 			existFav: false,
+			editVis: false,
 				
 		}
 	},
 	methods:{
-		favoriteAdd(newUserFav){
+		openedit(){
+			console.log('edit')
+			this.editVis = true
+		}, 
+		async favoriteSet(newUserFav){
 			this.currentUser  = newUserFav;
-			fetch('/setfavorite', {
+			 await fetch('/setfavorite', {
 				method:'POST',
 				headers: {
 					'Content-Type': 'application/json;charset=utf-8'
@@ -47,14 +52,16 @@ const app = Vue.createApp({
 				body: JSON.stringify(newUserFav)
 			}).then(res => res.text())
 			.then(data=>{
-				//location.reload();
-				//alert(data);
+				
 			});
+			this.existFav = this.currentUser.favorite.includes(this.currentReceptor._id)
 
 		},
 		favoriteHandler(){
 			this.favorite = !this.favorite;
 			localStorage.setItem('favorite', this.favorite);
+			console.log('inner')
+			this.history = new Array()
 		},
 		soundHandler(){
 			this.sound = !this.sound;
@@ -255,24 +262,14 @@ const app = Vue.createApp({
 				if (data =='errlog') {alert('Неправильный логин или пароль!');
 				that.loginVis=true; }
 				else {
-					
-					sendId = that.currentUser._id;
-		
-					object = {
-						senderId:  sendId,
-						senderSokId: socket.id,	
-						
-					};
+					location.reload()
 				}
-				
 			});
 			this.loginVis=false;
-			setTimeout(() => {
-				location.reload()
-			}, 1000); 
 		},
 		letReg(user){
 			that = this;
+			console.log('letreg')
 			fetch('/letreg', {
 				method: 'POST',
 				headers: {
@@ -280,14 +277,13 @@ const app = Vue.createApp({
 				},
 				body: JSON.stringify(user)
 				
-			}).then(res =>  res.ok ? res.json():res.text())
-			.then(function(data){
-				if (data =='errlog') alert('Такой пользователь уже существует!'); else	that.regVis=false;	
-							
+			}).then(res =>  res.ok ? location.reload():res.text())
+			.then((data)=>{
+				console.log(data)
+				if (data =='errlogin') alert('Пользователь с таким именем или логином уже существует!'); else	that.regVis=false;	
+				
 			});
-			setTimeout(() => {
-				location.reload()
-			}, 1000); 
+	
 							
 		},
 
@@ -317,12 +313,13 @@ const app = Vue.createApp({
 			});		
 		},
 		chooseReceptor(receptor){
-			//
+			//console.log(receptor, this.currentReceptor)
+			if (!that.currentUser.hasOwnProperty('favorite')) that.currentUser.favorite = [];
 			that=this;	
 			that.history=[];
 			this.currentReceptor = this.users.find(item=>item._id == receptor);
-			this.existFav = this.currentUser.favorite.find(item=>item==this.currentReceptor._id)
-			console.log('>>', this.currentReceptor);
+			this.existFav = this.currentUser.favorite.includes(this.currentReceptor._id)
+	
 			var  histQuery ={
 				from: this.currentUser._id,
 				who: this.currentReceptor._id
@@ -345,6 +342,7 @@ const app = Vue.createApp({
 					});
 					that.history = data;
 					lentaId.scrollTop==lentaId.scrollHeight;
+					console.log(that.history)
 					
 				};			
 			}).then(()=>{
@@ -420,7 +418,8 @@ const app = Vue.createApp({
 		},
 		currentName(){
 			that = this;
-		//	console.log(this.currentUser)
+			if (this.favorite) 
+			console.log(this.currentUser)
 			if (this.currentUser!==null){
 				fetch('/users')		
 					.then(res=>res.json())
@@ -436,9 +435,21 @@ const app = Vue.createApp({
 							// a должно быть равным b
 							return 0;
 						});
-						
-						that.users = data;
+						if (that.favorite){
+							if (!that.currentUser.hasOwnProperty('favorite')) that.currentUser.favorite = [];
+							filtredArr = [];
+							this.currentUser.favorite.forEach(item1=>{
+								let res = data.find(item=>item._id == item1);
+								filtredArr.push(res)
+							})
+							that.users = filtredArr;
+							console.log(that.users)
+							that.ishodusers = filtredArr;
+						} else{
+							that.users = data;
+					
 						that.ishodusers = data;
+						} 
 						
 						let sendId =null
 						if (this.currentUser ==null) return 
@@ -456,13 +467,13 @@ const app = Vue.createApp({
 		},
 		curUsSymb(){
 			if (this.currentUser!==null){
-				//console.log(this.currentUser.name[0])
+				
 				return this.currentUser.name[0]
 			}
 		}, 
 		curRecSymb(){
 			if (this.currentReceptor!==null){
-			//	console.log(this.currentReceptor.name[0])
+				
 				return this.currentReceptor.name[0]
 			}
 		},
@@ -506,8 +517,7 @@ const app = Vue.createApp({
 			.then(function(data){
 				if (data !=='errlog') {
 					that.currentUser = data;
-					console.log('------->',that.currentUser)
-					
+										
 				}
 			});	
 
@@ -729,31 +739,41 @@ app.component('messag',{
 
 	
  });
+
  app.component('men',{
-	props:['menuvis', 'curruser', 'currrecept', 'existfav'],
-	emits:['close-open', 'del-hist', 'del-acc','open-about' ],
+	props:['menuvis', 'curruser', 'currrecept', 'existfav', 'favorite'],
+	emits:['close-open', 'del-hist', 'del-acc','open-about', 'favorite-set', 'open-edit' ],
 	template: `
 				<div  v-if="menuvis" class="head-menu-list">
 					<h4 @click="openlog">{{tet}}</h4>
-					<h4 @click="favoriteAdd" v-if="!existfav">Добавить в избранное</h4>
-					<h4 @click="favoriteHandler" v-if="existfav">Удалить из избранного</h4>
+					<h4 @click="favoriteAdd" v-if="!existfav && currrecept">Добавить контакт в избранное</h4>
+					<h4 @click="favoriteDel" v-if="existfav && favorite">Удалить контакт из избранного</h4>
 					<h4 @click="delHist" v-if="currrecept">Отчистить историю</h4>
-					<h4 @click="delAcc" v-if="curruser">Удалить аккаунт</h4>
+					<h4 @click="openEdit" v-if="curruser">Редактировать свой аккаунт</h4>
+					<h4 @click="delAcc" v-if="curruser">Удалить свой аккаунт</h4>
 					<h4 @click="openabout">О нас</h4>				
 				</div>
 				`,
 	methods:{
+	
 		favoriteAdd(){
-			console.log('1>', this.curruser)
+	
 			if (!this.curruser.hasOwnProperty('favorite')) this.curruser.favorite = [];
-			let exist = this.curruser.favorite.find(item=>item==this.currrecept._id)
-			if(exist) alert('У Вас он уже жобавден!');
-			 this.curruser.favorite.push(this.currrecept._id)
-			console.log('2>',this.curruser)
-			this.$emit('favorite-add', this.curruser );
+			this.curruser.favorite.push(this.currrecept._id)
+			this.$emit('favorite-set', this.curruser );
+		},
+
+		favoriteDel(){
+			let index = this.curruser.favorite.indexOf(this.currrecept._id)
+			this.curruser.favorite.splice(index)
+			this.$emit('favorite-set', this.curruser );
 		},
 		openlog(){
 			this.$emit('open-log');
+			
+		},
+		openEdit(){
+			this.$emit('open-edit');
 		},
 	
 		delHist(){
@@ -765,6 +785,7 @@ app.component('messag',{
 		},
 		
 		openabout(){
+			console.log(this.favorite)
 			this.$emit('open-about');
 		}
 	},
@@ -780,21 +801,20 @@ app.component('messag',{
 	emits:['close-login', 'let-sigin', 'let-exit', 'open-reg'],
 	template: `
 			<div v-if="loginvis" class="fon"></div>	
-				<form>
-					<div v-if="loginvis" class="log" >
-						<div class="log-cont-img">
-							<img class="log-img" @click="close" src="./img/close.png">
-						</div>
-						<h3 class="vhod">Вход</h3>
-						<div class="log-inputs">
-							<input  id="personlog" type="text" @keyup.enter="enter" v-if="curruser==null" placeholder="Введите имя">
-							<input type="password" id="pass"  @keyup.enter="enter" v-if="curruser==null" placeholder="Введите пароль">
-							<button @click="enter" v-if="curruser==null">Войти</button>
-							<button @click="exit" v-if="curruser!==null">Выйти</button>
-							<button @click="openReg" v-if="curruser==null">Регистрация</button>
-						</div>					
+				<div v-if="loginvis" class="log" >
+					<div class="log-cont-img">
+						<img class="log-img" @click="close" src="./img/close.png">
 					</div>
-				</form>
+					<h3 class="vhod">Вход</h3>
+					<div class="log-inputs">
+						<input  id="personlog" type="text" @keyup.enter="enter" v-if="curruser==null" placeholder="Введите логин">
+						<input type="password" id="pass"  @keyup.enter="enter" v-if="curruser==null" placeholder="Введите пароль">
+						<button @click="enter" v-if="curruser==null">Войти</button>
+						<button @click="exit" v-if="curruser!==null">Выйти</button>
+						<button @click="openReg" v-if="curruser==null">Регистрация</button>
+					</div>					
+				</div>
+				
 			
 				`,
 	methods:{
@@ -803,7 +823,7 @@ app.component('messag',{
 		}, 
 		enter(){
 			let account={
-				name:personlog.value,
+				login:personlog.value,
 				password: pass.value
 			}
 			this.$emit('let-sigin', account);
@@ -820,22 +840,23 @@ app.component('messag',{
 
  app.component('registr',{
 	props:['regvis'],
-	emits:['close-reg'],
-	template: `<form>
+	emits:['close-reg', 'let-reg'],
+	template: `
 					<div v-if="regvis" class="fon"></div>	
-					<div v-if="regvis" class="log">	
+					<div v-if="regvis" class="log logHight">	
 						<div class="log-cont-img">
 							<img class="log-img" @click="close" src="./img/close.png">
 						</div>
 						<h3 class="vhod">Регистрация</h3>
 						<div class="log-inputs">
-							<input  id="personreg" type="text"  placeholder="Введите имя" >
+							<input  id="nameId" type="text"  placeholder="Введите имя" >
+							<input  id="personreg" type="text"  placeholder="Введите логин" >
 							<input type="password" id="pass1" v-if="currentUser==null" placeholder="Введите пароль" >
 							<input type="password" id="pass2"  v-if="currentUser==null" placeholder="Подтвердите пароль" >
-							<button @click="registration" v-if="currentUser==null">Войти</button>		
+							<button @click="registration" v-if="currentUser==null">Зарегистрироваться</button>		
 						</div>				
 					</div>
-				</form>	
+				
 				`,
 	methods:{
 		close(){
@@ -843,15 +864,63 @@ app.component('messag',{
 			this.$emit('close-reg');
 		},
 		registration(){
-			
-			if (personreg.value.length == 0) {alert ("Введите имя!"); return} 
+			if (nameId.value.length == 0) {alert ("Введите имя!"); return} 
+			if (personreg.value.length == 0) {alert ("Введите логин!"); return} 
 			if (pass1.value.length == 0) {alert ("Введите пароль!"); return} 
 			if (pass2.value.length == 0) {alert ("Введите второй пароль!"); return} 
 			
 			if (pass1.value == pass2.value ){
 				let ps=pass1.value;
-				let men={
-					name: personreg.value,
+				let men = {
+					name: nameId.value,
+					login: personreg.value,
+					password: ps,
+					
+				}
+				this.$emit('let-reg', men);
+				
+			} else alert ("Пароли не совпадают!")	
+		},
+	}	
+ });
+
+ app.component('edit',{
+	props:['editVis', 'curruser'],
+	emits:['close-edit', 'let-edit'],
+	template: `	
+					<div v-if="editVis" class="fon"></div>	
+					<div v-if="editVis" class="log logHight">	
+						<div class="log-cont-img">
+							<img class="log-img" @click="close" src="./img/close.png">
+						</div>
+						<h3 class="vhod">Регистрация</h3>
+						<div class="log-inputs">
+							<input  id="nameId1" type="text"  placeholder="Введите имя" :value="curruser.name">
+							<input  id="personreg" type="text1"  placeholder="Введите логин" :value="curruser.login">
+							<input type="password" id="pass11" v-if="curruser==null" placeholder="Введите пароль" :value="curruser.password">
+							<input type="password" id="pass21"  v-if="curruser==null" placeholder="Подтвердите пароль" :value="curruser.password">
+							<button @click="registration" v-if="curruser==null">Зарегистрироваться</button>		
+						</div>				
+					</div>
+				
+				`,
+	methods:{
+
+		close(){
+	//	console.log('wdwdwdw')
+			this.$emit('close-edit');
+		},
+		idit(){
+			if (nameId.value.length == 0) {alert ("Введите имя!"); return} 
+			if (personreg.value.length == 0) {alert ("Введите логин!"); return} 
+			if (pass1.value.length == 0) {alert ("Введите пароль!"); return} 
+			if (pass2.value.length == 0) {alert ("Введите второй пароль!"); return} 
+			
+			if (pass1.value == pass2.value ){
+				let ps=pass1.value;
+				let men = {
+					name: nameId.value,
+					login: personreg.value,
 					password: ps,
 					
 				}
@@ -876,7 +945,7 @@ app.component('messag',{
 	template: `	<div id="contClsId" class="closed">
 					<img class="log-img" @click="close" src="./img/closeBlue.png">
 				</div>
-				<input class="contacts-search" id="search"   placeholder="Поиск..." v-on:input="searching">
+				<input class="contacts-search" id="search"   placeholder="Поиск..." v-on:input="searching" readonly onfocus="this.removeAttribute('readonly')" autocomplete="off">
 				<div v-for="item in users"  v-bind:id="item._id" v-bind:key="item" @click="chooseReceptor" @mouseover="hover" @mouseout="hoverout" class="contacts-item">
 					<div  v-bind:id="item._id" class="contacts-item-name">
 						{{item.name}}
@@ -1041,7 +1110,7 @@ app.component('messag',{
 				`,
 	methods:{
 		close(){
-			this.$emit('close-about');
+			this.$emit('abtVis');
 		},
 	}	
  });

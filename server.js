@@ -256,13 +256,11 @@ app.post('/setfavorite', function(reg, res, next){
 	var user = reg.body;
 	var ObjectID = require('mongodb').ObjectID;
 	var o_id = new ObjectID(user._id); 
-	console.log(user)
 	//var mongoClient = require('mongodb').MongoClient;
 	var url = 'mongodb://localhost:27017';
 	mongoClient.connect(url, function(err, dbs){
 		var db = dbs.db('messeger');
 		var collection = db.collection("users");
-		console.log(o_id);
 		collection.updateOne({_id: o_id},{$set:{favorite: user.favorite}},(err, res)=>{	
 			if (err) console.log('deleted  mess err:',err);
 		});
@@ -271,8 +269,6 @@ app.post('/setfavorite', function(reg, res, next){
 	res.send("Сообщение удалено!");
 	res.end();
 });
-
-
 
 
 app.post('/delhist', function(reg, res, next){
@@ -341,6 +337,7 @@ app.get('/users', function(reg, res, next){
 
 app.post('/aunt', function(reg, res, next){
 	var currentLogin = reg.body;
+
 	//Подключение базы данных ---------------------------
 	//var mongoClient = require('mongodb').MongoClient;
 	var url = 'mongodb://localhost:27017';
@@ -352,7 +349,7 @@ app.post('/aunt', function(reg, res, next){
 		// взаимодействие с базой данных
 		var collection = db.collection("users");
 		//поиск без параметров
-		collection.find({name:currentLogin.name, password:currentLogin.password}).toArray((err, results)=>{
+		collection.find({login:currentLogin.login, password:currentLogin.password}).toArray((err, results)=>{
 			
 			if (results.length==0){
 			
@@ -367,10 +364,11 @@ app.post('/aunt', function(reg, res, next){
 			res.end();	
 		});
 	});	
-});
+});     
 
-app.post('/letreg', function(reg, res, next){
+app.post('/letreg', async function(reg, res, next){
 	var newUser = reg.body;
+	console.log('---->',newUser)
 	//var mongoClient = require('mongodb').MongoClient;
 	var url = 'mongodb://localhost:27017';
 	mongoClient.connect(url, function(err, dbs) {
@@ -380,7 +378,7 @@ app.post('/letreg', function(reg, res, next){
 	
 		var collection = db.collection("users");
 		//поиск без параметров
-		collection.find({name:newUser.name}).toArray((err, results)=>{
+		collection.find({$or:[{login:newUser.login},{name: newUser.name}]}).toArray((err, results)=>{
 			if (results.length == 0){
 				
 				collection.insertMany([newUser],(err, result)=>{
@@ -391,9 +389,9 @@ app.post('/letreg', function(reg, res, next){
 					dbs.close();
 				  });	
 			} else {
-				
+				console.log('errlogin')
 				res.statusCode=403;
-				res.send('errlog');
+				res.send('errlogin');
 				dbs.close();
 				return										
 			}	

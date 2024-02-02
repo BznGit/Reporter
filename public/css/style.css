@@ -30,6 +30,9 @@
     color: white;
     z-index: 2000;
 }
+.logHight{
+    height: 320px;
+}
 .vhod{
     margin-left: 15px;
 }

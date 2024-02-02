@@ -24,6 +24,8 @@
 				</login>
 				<registr @close-reg="regVis=false" @let-reg="letReg" v-bind:regvis="regVis">
 				</registr>
+				<edit @close-edit="editVis=false" v-bind:editVis="editVis" v-bind:curruser="currentUser">
+				</edit>
 				<about @close-about="abtVis=false" v-if="abtVis" v-bind:abtVis="abtVis">
 				</about>
 
@@ -49,8 +51,8 @@
 					<div class="head-menu" @click="menuVis=!menuVis" title="Меню">
 						<img class="head-menu-img" src="./img/menu2.png">
 						<men @open-log="loginVis=!loginVis" @open-about="abtVis=true" @del-hist="deleteHistory"
-							@del-acc="deleteAccount" @favorite-add="favoriteAdd" v-bind:menuvis="menuVis" v-bind:curruser="currentUser"
-							v-bind:currrecept="currentReceptor" v-bind:existfav="existFav" >
+							@del-acc="deleteAccount" @favorite-set="favoriteSet" v-bind:menuvis="menuVis" v-bind:curruser="currentUser"
+							v-bind:currrecept="currentReceptor" v-bind:existfav="existFav"  v-bind:favorite="favorite" @open-edit="openedit" >
 						</men>
 
 					</div>
