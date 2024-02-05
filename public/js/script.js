@@ -67,7 +67,7 @@ const app = Vue.createApp({
 					'Content-Type': 'application/json;charset=utf-8'
 				  },
 				body: JSON.stringify(newUserFav)
-			}).then(res => res.text())
+			}).then(res => res.ok ? location.reload():res.text())
 			.then(data=>{
 				
 			});
