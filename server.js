@@ -68,7 +68,7 @@ app.get('/getuser', function(reg, res, next){
 		var collection = db.collection("users");
 		collection.find({_id:o_id }).toArray((err, results)=>{
 			if (results.length!==0){
-				results.forEach(item=>delete item.password)// удаление паролей
+				//results.forEach(item=>delete item.password)// удаление паролей
 				res.send(JSON.stringify(results[0]));
 				res.end();
 				dbs.close();
@@ -337,9 +337,6 @@ app.get('/users', function(reg, res, next){
 
 app.post('/aunt', function(reg, res, next){
 	var currentLogin = reg.body;
-
-	//Подключение базы данных ---------------------------
-	//var mongoClient = require('mongodb').MongoClient;
 	var url = 'mongodb://localhost:27017';
 	var ObjectID = require('mongodb').ObjectID;
 	var o_id = new ObjectID(reg.cookies.ass);
@@ -368,8 +365,6 @@ app.post('/aunt', function(reg, res, next){
 
 app.post('/letreg', async function(reg, res, next){
 	var newUser = reg.body;
-	console.log('---->',newUser)
-	//var mongoClient = require('mongodb').MongoClient;
 	var url = 'mongodb://localhost:27017';
 	mongoClient.connect(url, function(err, dbs) {
 		var db = dbs.db('messeger');
@@ -398,6 +393,37 @@ app.post('/letreg', async function(reg, res, next){
 		});	
 	});
 });
+
+app.post('/letedit', async function(reg, res, next){
+	var newUser = reg.body;
+	let id = reg.cookies.ass;
+	var ObjectID = require('mongodb').ObjectID;
+	var o_id = new ObjectID(reg.cookies.ass);
+	var url = 'mongodb://localhost:27017';
+	mongoClient.connect(url, function(err, dbs) {
+		var db = dbs.db('messeger');
+		if(err) return console.log(err);
+		var collection = db.collection("users");
+	
+		collection.find({$or:[{login:newUser.login}, {name: newUser.name}]}).toArray((err, results)=>{
+			console.log(results)
+			let index = results.findIndex(item=>item._id == id);
+			let arr = results.splice(index, 1)
+			if (arr.length != 0){
+				collection.updateOne({_id:o_id }, {$set:{name: newUser.name, login: newUser.login, password: newUser.password}},(err, result)=>{
+					res.end();
+					dbs.close();
+				  });	
+			} else {
+				console.log('errlogin')
+				res.statusCode=403;
+				res.send('errlogin');
+				dbs.close();
+				return										
+			}	
+		});	
+	});
+})
 
 app.get('/exit', function(reg, res, next){
 	res.cookie('ass', reg.cookies.ass, { maxAge: 0, httpOnly: true });

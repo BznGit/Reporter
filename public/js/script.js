@@ -38,9 +38,26 @@ const app = Vue.createApp({
 		}
 	},
 	methods:{
+		letEdit(editUser){
+			console.log(editUser)
+			fetch('/letedit', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json;charset=utf-8'
+				},
+				body: JSON.stringify(editUser)
+				
+			}).then(res =>  res.ok ? location.reload():res.text())
+			.then((data)=>{
+				console.log(data)
+				if (data =='errlogin') alert('Пользователь с таким именем или логином уже существует!'); else	that.regVis=false;	
+				
+			});
+		},
 		openedit(){
-			console.log('edit')
-			this.editVis = true
+			
+			this.editVis = true;
+			console.log('edit>',this.editVis)
 		}, 
 		async favoriteSet(newUserFav){
 			this.currentUser  = newUserFav;
@@ -885,24 +902,28 @@ app.component('messag',{
  });
 
  app.component('edit',{
-	props:['editVis', 'curruser'],
+	props:['editvis', 'curruser'],
 	emits:['close-edit', 'let-edit'],
-	template: `	
-					<div v-if="editVis" class="fon"></div>	
-					<div v-if="editVis" class="log logHight">	
+	template: `	<div>
+					<div v-if="editvis" class="fon"></div>	
+					<div v-if="editvis" class="log logHightEdit">	
 						<div class="log-cont-img">
 							<img class="log-img" @click="close" src="./img/close.png">
 						</div>
-						<h3 class="vhod">Регистрация</h3>
+						<h3 class="vhod">Изиенить аккуаунт</h3>
 						<div class="log-inputs">
-							<input  id="nameId1" type="text"  placeholder="Введите имя" :value="curruser.name">
-							<input  id="personreg" type="text1"  placeholder="Введите логин" :value="curruser.login">
-							<input type="password" id="pass11" v-if="curruser==null" placeholder="Введите пароль" :value="curruser.password">
-							<input type="password" id="pass21"  v-if="curruser==null" placeholder="Подтвердите пароль" :value="curruser.password">
-							<button @click="registration" v-if="curruser==null">Зарегистрироваться</button>		
+							<label for="name">Текущее имя:</label>
+							<input  name="name" id="nameId1" type="text"  placeholder="Введите имя" :value="curruser.name">
+							<label for="login">Текущий логин:</label>
+							<input  name="login" id="login1" type="text1"  placeholder="Введите логин" :value="curruser.login">
+							<label for="pass">Текущий пароль:</label>
+							<input  name="pass" type="password" id="pass11"  placeholder="Введите пароль" :value="curruser.password">
+							<label for="pass1">Подтверждение текущего пароля:</label>
+							<input name="pass1" class="logmarge" type="password" id="pass21"   placeholder="Подтвердите пароль" :value="curruser.password">
+							<button @click="letEdit" >Изменить</button>		
 						</div>				
 					</div>
-				
+				</div>
 				`,
 	methods:{
 
@@ -910,21 +931,22 @@ app.component('messag',{
 	//	console.log('wdwdwdw')
 			this.$emit('close-edit');
 		},
-		idit(){
-			if (nameId.value.length == 0) {alert ("Введите имя!"); return} 
-			if (personreg.value.length == 0) {alert ("Введите логин!"); return} 
-			if (pass1.value.length == 0) {alert ("Введите пароль!"); return} 
-			if (pass2.value.length == 0) {alert ("Введите второй пароль!"); return} 
+		letEdit(){
+			if (nameId1.value.length == 0) {alert ("Введите имя!"); return} 
+			if (login1.value.length == 0) {alert ("Введите логин!"); return} 
+			if (pass11.value.length == 0) {alert ("Введите пароль!"); return} 
+			if (pass21.value.length == 0) {alert ("Введите второй пароль!"); return} 
 			
-			if (pass1.value == pass2.value ){
-				let ps=pass1.value;
-				let men = {
-					name: nameId.value,
-					login: personreg.value,
+			if (pass11.value == pass21.value ){
+				let ps=pass11.value;
+				let user = {
+					name: nameId1.value,
+					login: login1.value,
 					password: ps,
 					
 				}
-				this.$emit('let-reg', men);
+		
+				this.$emit('let-edit', user);
 				
 			} else alert ("Пароли не совпадают!")	
 		},
@@ -1104,13 +1126,13 @@ app.component('messag',{
 						<h3>2024</h3>
 						<br>
 						<br>				
-						<h4>Version 1.0.6 </h4>
+						<h4>Version 2.0.1 </h4>
 					</div>					
 				</div>
 				`,
 	methods:{
 		close(){
-			this.$emit('abtVis');
+			this.$emit('close-about');
 		},
 	}	
  });

@@ -33,6 +33,9 @@
 .logHight{
     height: 320px;
 }
+.logHightEdit{
+    height: 400px;
+}
 .vhod{
     margin-left: 15px;
 }
@@ -57,12 +60,20 @@
     height: 85%;
     z-index: 2000;
 }
+.log-inputs>label{
+    margin-top: 5px;
+    margin-left: 25px;
+    margin-right: auto;
+}
 .log-inputs>input, button {
-    margin-top: 5%;
+    margin-top: 2%;
     height: 15%;
     width: 80%;
     border-radius: 10px;
     font-size: large;
+}
+button{
+    margin-top: 5%;  
 }
 .log-inputs> button{
     color: white;

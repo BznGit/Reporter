@@ -24,7 +24,7 @@
 				</login>
 				<registr @close-reg="regVis=false" @let-reg="letReg" v-bind:regvis="regVis">
 				</registr>
-				<edit @close-edit="editVis=false" v-bind:editVis="editVis" v-bind:curruser="currentUser">
+				<edit @close-edit="editVis=false" v-bind:editvis="editVis"  @let-edit="letEdit" v-bind:curruser="currentUser">
 				</edit>
 				<about @close-about="abtVis=false" v-if="abtVis" v-bind:abtVis="abtVis">
 				</about>
