@@ -22,7 +22,7 @@
     align-items: center;
     left: 50%;
     top: 50%;
-    height: 270px;
+    height: 220px;
     width: 250px;
     transform:translate(-50%, -50%);
     background-color: steelblue;
@@ -34,10 +34,12 @@
     height: 320px;
 }
 .logHightEdit{
-    height: 400px;
+    height: 440px;
 }
 .vhod{
+    margin-top: 10px;
     margin-left: 15px;
+    padding-bottom: 5px;
 }
 
 .log-cont-img{
@@ -57,17 +59,17 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: 85%;
+    height: 80%;
     z-index: 2000;
 }
 .log-inputs>label{
-    margin-top: 5px;
+
     margin-left: 25px;
     margin-right: auto;
 }
 .log-inputs>input, button {
-    margin-top: 2%;
-    height: 15%;
+    
+    height: 40px;
     width: 80%;
     border-radius: 10px;
     font-size: large;

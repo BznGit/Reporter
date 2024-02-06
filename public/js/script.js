@@ -910,7 +910,7 @@ app.component('messag',{
 						<div class="log-cont-img">
 							<img class="log-img" @click="close" src="./img/close.png">
 						</div>
-						<h3 class="vhod">Изиенить аккуаунт</h3>
+						<h3 class="vhod">Редактирвать данные свого аккаунта</h3>
 						<div class="log-inputs">
 							<label for="name">Текущее имя:</label>
 							<input  name="name" id="nameId1" type="text"  placeholder="Введите имя" :value="curruser.name">
