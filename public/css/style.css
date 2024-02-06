@@ -22,7 +22,7 @@
     align-items: center;
     left: 50%;
     top: 50%;
-    height: 220px;
+    height: 270px;
     width: 250px;
     transform:translate(-50%, -50%);
     background-color: steelblue;
@@ -56,6 +56,7 @@
 
 .log-inputs{  
     display: flex;
+    
     align-items: center;
     justify-content: center;
     flex-direction: column;
@@ -68,15 +69,13 @@
     margin-right: auto;
 }
 .log-inputs>input, button {
-    
+    margin-bottom: 10px;
     height: 40px;
     width: 80%;
     border-radius: 10px;
     font-size: large;
 }
-button{
-    margin-top: 5%;  
-}
+
 .log-inputs> button{
     color: white;
     background-color: steelblue;
