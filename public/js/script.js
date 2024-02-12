@@ -2,7 +2,7 @@ console.log("it's ok");
 var socket =  io.connect(location.origin);
 let object= null;
 let sendId = null;	
-const events = ['dragenter', 'dragover', 'dragleave', 'drop']
+const events = ['dragenter', 'dragover', 'dragleave', 'drop', 'dragstart', 'dragend']
 function preventDefaults(e) {
     e.preventDefault()
 }
@@ -34,21 +34,41 @@ const app = Vue.createApp({
 			favorite: false,
 			existFav: false,
 			editVis: false,
+			dropVis: false
 				
 		}
 	},
 	methods:{
+		dragenter1(){
+			console.log('1....>>>');
+			//let elem = document.querySelector('.dropzone')	
+				let elem = document.getElementById('assid') 
+			console.log('....>>>', elem);
+			elem.classList.add('hover')
+		},
+		dragleave1(){
+			console.log('1...<<<');
+			//let elem = document.querySelector('.dropzone')	
+				let elem = document.getElementById('assid') 
+			console.log('....<<<', elem);
+			elem.classList.remove('hover')
+		},
+		
 		dragenter(){
-			console.log('....>>>')
-			lentaId.classList.add('hover')
+			console.log('....>>>');
+			this.dropVis = true;	
+	
+		},
+		dragleave(){
+			console.log('....<<<');
+			this.dropVis = false;
+			let elem = document.getElementById('assid') 
+			console.log('....<<<', elem);
+			elem.classList.remove('hover')
 		},
 		drop(e){
-			//e.preventDefault();
-			//dropZone.classList.remove(hoverClassName);
-			//console.log(e);
-			//const files = Array.from(e.dataTransfer.files);
-			
-	
+			this.dropVis = false;
+		
 			this.inputFiles = e.dataTransfer.files
 			this.fileVis =true;
 		},
@@ -578,7 +598,7 @@ app.component('messag',{
 	},
 	props:['users', 'currentUser','sound', 'history', 'currentreceptor' ],
 	emits:['new-mess',  'delete-mess', 'open-fl', ],
-	template: `<div>
+	template: `<div >
 				<div  v-for="item in history" v-bind:key="item" v-bind:class=item.class>
 					<div class="mess-name">
 						<h4>{{item.person}}</h4>

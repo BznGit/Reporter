@@ -16,8 +16,11 @@
 	</head>
 
 	<body>
-		<div id="app">
-			<div class=mainapp>
+		<div id="app" >
+			<div @dragenter.prevent="dragenter" >
+
+			
+			<div class=mainapp >
 				<login @close-login="loginVis=false" @let-sigin="signin" @let-exit="letexit"
 					@open-reg="regVis=!regVis; loginVis=!loginVis" v-bind:loginvis="loginVis"
 					v-bind:curruser="currentUser">
@@ -28,7 +31,9 @@
 				</edit>
 				<about @close-about="abtVis=false" v-if="abtVis" v-bind:abtVis="abtVis">
 				</about>
-
+				<div id="assid"class="dropzone" v-show="dropVis" @drop.prevent="drop" @dragleave.prevent="dragleave" @dragenter.prevent="dragenter1" >
+					<h3>Перетащите сюда свои файлы</h3>
+				</div>
 				<div class="head">
 					<div class="head-users" id="contVisId" @click="openContacts" v-if="currentUser!==null">
 						<img class="head-users-img" src="./img/contacts.png">
@@ -54,7 +59,6 @@
 							@del-acc="deleteAccount" @favorite-set="favoriteSet" v-bind:menuvis="menuVis" v-bind:curruser="currentUser"
 							v-bind:currrecept="currentReceptor" v-bind:existfav="existFav"  v-bind:favorite="favorite" @open-edit="openedit" >
 						</men>
-
 					</div>
 				</div>
 				<div class="content">
@@ -64,14 +68,15 @@
 							@choose-receptor="chooseReceptor"   @close-repost="closeRepost"  ></contact>
 					</div>
 					<div id="lentasenderId"  class="lenta-sender">
-						<div class="lenta" @scroll="onScroll" id="lentaId" @drop.prevent="drop" @dragenter.prevent="dragenter">
-							<messag v-bind:currentUser="currentUser" v-if="currentUser!==null" v-bind:users="users" v-bind:sound="sound"
+						<div  class="lenta" @scroll="onScroll" id="lentaId"  >
+							<messag v-bind:currentUser="currentUser" v-if="currentUser!==null" v-bind:users="users" v-bind:sound="sound" 
 								v-bind:history="history"  @add-hist="addHist"
 								@new-mess="newmess" @delete-mess="deletemess" v-bind:currentreceptor="currentReceptor"
 								@choose-receptor="chooseReceptor" @open-fl="repost">
 							</messag>
 							
 						</div>
+
 						<div v-if="currentUser!==null" class="sender">
 								<div id="downer" v-if="scrollVis"  @click="letDown">
 									<img class="downer-img" src="./img/down.png">
@@ -120,6 +125,7 @@
 					<span>© 2021-2024</span>
 				</div>
 			</div>
+		</div>
 		</div>
 		<script src="./js/script.js"></script>
 		<script>

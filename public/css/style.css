@@ -4,9 +4,7 @@
     font-family: Tahoma;
    
 }
-.hover{
-    background-color: aquamarine;
-}
+
 .mainapp{
    
     height: 100vh;
@@ -16,6 +14,31 @@
  
     
 }
+.dropzone{
+    display: flex;
+    position: absolute;
+    background-color: white;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    left: 50%;
+    top: 50%;
+    height: 80vh;
+    width: 60vw;
+    transform:translate(-50%, -50%);
+    border: 3px dashed gainsboro;
+    border-radius: 10px;
+    z-index: 30000;
+    color: gainsboro;
+    webkit-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+-moz-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+}
+.hover{
+    color: #4682b4;
+    border: 3px dashed #4682b4;
+}
+
 .log{
     position: absolute;
 
@@ -409,6 +432,13 @@
     height: 85%;
     width: 100%; 
     overflow:hidden; 
+    z-index: 10000;
+}
+.hover{
+    border: 2px dashed  steelblue;;
+}
+.hover2{
+    display: none;
 }
 .lenta-vis{
     display: none;
