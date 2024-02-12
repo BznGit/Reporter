@@ -64,7 +64,7 @@
 							@choose-receptor="chooseReceptor"   @close-repost="closeRepost"  ></contact>
 					</div>
 					<div id="lentasenderId"  class="lenta-sender">
-						<div class="lenta" @scroll="onScroll" id="lentaId">
+						<div class="lenta" @scroll="onScroll" id="lentaId" @drop.prevent="drop" @dragenter.prevent="dragenter">
 							<messag v-bind:currentUser="currentUser" v-if="currentUser!==null" v-bind:users="users" v-bind:sound="sound"
 								v-bind:history="history"  @add-hist="addHist"
 								@new-mess="newmess" @delete-mess="deletemess" v-bind:currentreceptor="currentReceptor"

@@ -2,10 +2,10 @@ console.log("it's ok");
 var socket =  io.connect(location.origin);
 let object= null;
 let sendId = null;	
-
-
-
-
+const events = ['dragenter', 'dragover', 'dragleave', 'drop']
+function preventDefaults(e) {
+    e.preventDefault()
+}
 const app = Vue.createApp({
 	data(){
 		return{
@@ -38,6 +38,20 @@ const app = Vue.createApp({
 		}
 	},
 	methods:{
+		dragenter(){
+			console.log('....>>>')
+			lentaId.classList.add('hover')
+		},
+		drop(e){
+			//e.preventDefault();
+			//dropZone.classList.remove(hoverClassName);
+			//console.log(e);
+			//const files = Array.from(e.dataTransfer.files);
+			
+	
+			this.inputFiles = e.dataTransfer.files
+			this.fileVis =true;
+		},
 		letEdit(editUser){
 			console.log(editUser)
 			fetch('/letedit', {
@@ -258,6 +272,7 @@ const app = Vue.createApp({
 			input.click();
 			input.onchange = (e) => {
 				that.inputFiles =  e.target.files;
+				console.log(e.target.files)
 				that.fileVis =true;
 			};		
 		},
@@ -505,6 +520,9 @@ const app = Vue.createApp({
 		},
 	}, 
 	mounted(){
+		events.forEach((eventName) => {
+			document.body.addEventListener(eventName, preventDefaults)
+		})
 		this.sound =  JSON.parse(localStorage.getItem('sound'));
 		this.favorite =  JSON.parse(localStorage.getItem('favorite'));
 		that = this;
@@ -539,6 +557,11 @@ const app = Vue.createApp({
 			});	
 
 	},
+	unmounted(){
+		events.forEach((eventName) => {
+			document.body.removeEventListener(eventName, preventDefaults)
+		})
+	}
 
 
 });
