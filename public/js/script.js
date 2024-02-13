@@ -5,6 +5,7 @@ let sendId = null;
 const events = ['dragenter', 'dragover', 'dragleave', 'drop', 'dragstart', 'dragend']
 function preventDefaults(e) {
     e.preventDefault()
+	e.stopPropagation()
 }
 const app = Vue.createApp({
 	data(){
@@ -34,41 +35,47 @@ const app = Vue.createApp({
 			favorite: false,
 			existFav: false,
 			editVis: false,
-			dropVis: false
+			dropVis: false,
+			dragenterBool: false
 				
 		}
 	},
 	methods:{
+
 		dragenter1(){
-			console.log('1....>>>');
-			//let elem = document.querySelector('.dropzone')	
-				let elem = document.getElementById('assid') 
-			console.log('....>>>', elem);
+			let elem = document.getElementById('assid') 
 			elem.classList.add('hover')
-		},
+			this.dragenterBool = true;
+			let img = document.getElementById('docImgId') 
+			img.classList.add('himg')
+		},	
 		dragleave1(){
-			console.log('1...<<<');
-			//let elem = document.querySelector('.dropzone')	
-				let elem = document.getElementById('assid') 
-			console.log('....<<<', elem);
-			elem.classList.remove('hover')
-		},
 		
+			let elem = document.getElementById('assid') 
+			elem.classList.remove('hover')
+			let img = document.getElementById('docImgId') 
+			img.classList.remove('himg')
+			this.dragenterBool = false;
+			console.log('dragleave1', this.dragenterBool);
+		},
 		dragenter(){
-			console.log('....>>>');
+
+			//if(this.dragenterBool) return
 			this.dropVis = true;	
-	
+			console.log('dragenter>>>', this.dragenterBool);
 		},
 		dragleave(){
-			console.log('....<<<');
-			this.dropVis = false;
-			let elem = document.getElementById('assid') 
-			console.log('....<<<', elem);
-			elem.classList.remove('hover')
+		
+			if(this.dragenterBool) return
+			console.log('dragleave',this.dragenterBool );
+			this.dropVis = false;	
 		},
 		drop(e){
 			this.dropVis = false;
-		
+			let elem = document.getElementById('assid') 
+			elem.classList.remove('hover')
+			let img = document.getElementById('docImgId') 
+			img.classList.remove('himg')
 			this.inputFiles = e.dataTransfer.files
 			this.fileVis =true;
 		},
@@ -182,7 +189,7 @@ const app = Vue.createApp({
 			});
 		},
 		openContacts(){
-		//	console.log('кнопка users');
+			console.log('кнопка users');
 			contactsId.style.display="block";
 			lentasenderId.style.display="none";
 			contVisId.style.display="none";

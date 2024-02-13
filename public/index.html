@@ -16,8 +16,8 @@
 	</head>
 
 	<body>
-		<div id="app" >
-			<div @dragenter.prevent="dragenter" >
+		<div id="app" > 
+			<div @dragenter="dragenter" @drop.prevent="dragleave"   @dragleave.prevent="dragleave">
 
 			
 			<div class=mainapp >
@@ -31,9 +31,7 @@
 				</edit>
 				<about @close-about="abtVis=false" v-if="abtVis" v-bind:abtVis="abtVis">
 				</about>
-				<div id="assid"class="dropzone" v-show="dropVis" @drop.prevent="drop" @dragleave.prevent="dragleave" @dragenter.prevent="dragenter1" >
-					<h3>Перетащите сюда свои файлы</h3>
-				</div>
+			
 				<div class="head">
 					<div class="head-users" id="contVisId" @click="openContacts" v-if="currentUser!==null">
 						<img class="head-users-img" src="./img/contacts.png">
@@ -125,6 +123,10 @@
 					<span>© 2021-2024</span>
 				</div>
 			</div>
+		</div>
+		<div id="assid"class="dropzone" v-show="dropVis" @drop.prevent="drop" @dragleave.prevent="dragleave1" @dragenter="dragenter1" >
+			<h3>Перетащите сюда свои файлы</h3>
+			<img class="imgDoc" id="docImgId" src="./img/doc.png">
 		</div>
 		</div>
 		<script src="./js/script.js"></script>
