@@ -251,6 +251,26 @@ app.post('/delmess', function(reg, res, next){
 	res.send("Сообщение удалено!");
 	res.end();
 });
+app.post('/editmess', function(reg, res, next){
+	var editMess = reg.body;
+	var ObjectID = require('mongodb').ObjectID;
+	var o_id = new ObjectID(editMess.id); 
+	//var mongoClient = require('mongodb').MongoClient;
+	var url = 'mongodb://localhost:27017';
+	mongoClient.connect(url, function(err, dbs){
+		var db = dbs.db('messeger');
+		var collection = db.collection("history");
+
+			collection.updateOne({$and:[{_id:o_id}, {senderId:editMess.userId}]}, {$set:{message: editMess.text}},(err, res)=>{	
+				if (err) console.log('edited  mess err:',err);
+				
+			});
+		
+		dbs.close();
+	});
+	res.send("Сообщение удалено!");
+	res.end();
+});
 
 app.post('/setfavorite', function(reg, res, next){
 	var user = reg.body;

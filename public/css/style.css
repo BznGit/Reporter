@@ -486,6 +486,10 @@
     height: min-content;
   
 }
+.editMessage{
+    background-color: white;
+    border: 2px solid steelblue;
+}
 
 .mess-name{
     display: flex; 
@@ -560,12 +564,14 @@
     justify-content: center;
     align-content: center;
     width: 30px;
+    z-index: 100;
 }
 .mess-menu:hover{
     transform: scale(1.2);
 }
 
 .mess-menu-img{
+    z-index: 0;
     width: 5px;
     margin: auto;
 }
@@ -573,12 +579,14 @@
 .mess-click{
     position: absolute;
     left: 98%;
-    top: -10px;
+    top: -16px;
     align-items: center;
     display: none;
     flex-direction:  column;
     justify-content:space-between;
     width: 50px;
+ 
+  
 }
 .mess-repost{
     display: flex;
@@ -592,7 +600,7 @@
 }
 .mess-delete{
     display: flex;
-    margin: 5px;
+    margin: 3px;
     margin-left: auto;
     margin-right: 5px;
 }
@@ -747,7 +755,7 @@
 }
 .sender-img{
     display: flex;
-    height: 30px;
+  
     width: 30px;
 }
 .sender-img:hover{
@@ -757,7 +765,7 @@
 #message{
     font-size: 1em;
     border: 0px;
-    border-bottom:3px solid steelblue;
+    border-bottom:3px solid #4682b4;
     height: 70%;
     width: 100%;
 }

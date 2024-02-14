@@ -36,7 +36,9 @@ const app = Vue.createApp({
 			existFav: false,
 			editVis: false,
 			dropVis: false,
-			dragenterBool: false
+			dragenterBool: false,
+			messText: null,
+			editMessId: null,
 				
 		}
 	},
@@ -56,18 +58,18 @@ const app = Vue.createApp({
 			let img = document.getElementById('docImgId') 
 			img.classList.remove('himg')
 			this.dragenterBool = false;
-			console.log('dragleave1', this.dragenterBool);
+		
 		},
 		dragenter(){
 
 			//if(this.dragenterBool) return
 			this.dropVis = true;	
-			console.log('dragenter>>>', this.dragenterBool);
+		
 		},
 		dragleave(){
 		
 			if(this.dragenterBool) return
-			console.log('dragleave',this.dragenterBool );
+	
 			this.dropVis = false;	
 		},
 		drop(e){
@@ -80,7 +82,7 @@ const app = Vue.createApp({
 			this.fileVis =true;
 		},
 		letEdit(editUser){
-			console.log(editUser)
+		
 			fetch('/letedit', {
 				method: 'POST',
 				headers: {
@@ -90,7 +92,7 @@ const app = Vue.createApp({
 				
 			}).then(res =>  res.ok ? location.reload():res.text())
 			.then((data)=>{
-				console.log(data)
+				
 				if (data =='errlogin') alert('Пользователь с таким именем или логином уже существует!'); else	that.regVis=false;	
 				
 			});
@@ -98,7 +100,7 @@ const app = Vue.createApp({
 		openedit(){
 			
 			this.editVis = true;
-			console.log('edit>',this.editVis)
+			
 		}, 
 		async favoriteSet(newUserFav){
 			this.currentUser  = newUserFav;
@@ -118,7 +120,7 @@ const app = Vue.createApp({
 		favoriteHandler(){
 			this.favorite = !this.favorite;
 			localStorage.setItem('favorite', this.favorite);
-			console.log('inner')
+		
 			this.history = new Array()
 		},
 		soundHandler(){
@@ -140,7 +142,7 @@ const app = Vue.createApp({
 			ass.sort((a, b)=>a.name - b.name);
 		},
 		repost(messId){
-			console.log(close);
+			
 			this.currentRepostMess = this.history.find(item => item._id == messId);	
 		},
 		reposted(closeVis){
@@ -163,7 +165,7 @@ const app = Vue.createApp({
 				
 				if (tempId2!==data.senderId ||tempId2==null ){
 					let newMsgImg = document.getElementById(data.senderId+1);
-					console.log(newMsgImg);
+					
 					newMsgImg.style.display = "flex"
 				} 	
 			}
@@ -188,8 +190,41 @@ const app = Vue.createApp({
 
 			});
 		},
+		editmess(mess){
+			
+			this.messText = mess.text;
+			this.editMessId = mess.messId
+		},
+		fecthEditMessage(){
+			let btn = document.getElementById(this.editMessId);
+			let currMess = btn.parentNode ;
+			currMess.classList.remove('editMessage')
+			let text = currMess.querySelector('p')
+			text.innerText = this.messText;
+			let editmess ={
+				id: this.editMessId,
+				userId: this.currentUser._id,
+				receptorId: this.currentReceptor._id,
+				text: this.messText
+			}
+		
+			this.messText = null
+			this.editMessId = null
+			fetch('/editmess', {
+				method:'POST',
+				headers: {
+					'Content-Type': 'application/json;charset=utf-8'
+				  },
+				body: JSON.stringify(editmess)
+			}).then(res => res.text())
+			.then(data=>{
+				//location.reload();
+				//alert(data);
+
+			});
+		},
 		openContacts(){
-			console.log('кнопка users');
+		
 			contactsId.style.display="block";
 			lentasenderId.style.display="none";
 			contVisId.style.display="none";
@@ -217,7 +252,11 @@ const app = Vue.createApp({
 		},
 		submit(){
 			//console.log('***', this.currentUser._id);
-			
+			if(this.editMessId!=null){
+		
+				this.fecthEditMessage()
+				return
+			}
 			sendId =null;
 			let dataFile =null;
 			if (this.currentReceptor == null && this.sendToAll==false) {
@@ -236,18 +275,18 @@ const app = Vue.createApp({
 					
 			//формирование времени ----------------------------------------------------------------
 			let date  = Date.now();
-			console.log('date>>>', Date.now())
+	
 			let hours = new Date(date).getHours();
 			let minutes = new Date(date).getMinutes();
 			if (minutes<10) minutes = '0'+ minutes;
 			let day = new Date(date).getDate();
 			let month = new Date(date).getMonth() + 1;
 			let year = new Date(date).getFullYear();
-			console.log(year);
+		
 			let as1 ='' +year;
-			console.log(typeof(as1))
+		
 			let as2 = as1.slice(2)
-			console.log(as2)
+		
 			if (month<10) month = '0'+ month;
 			let time = `${hours}:${minutes}`;
 			let dete = `${day}.${month}.${as2}`;	
@@ -299,7 +338,7 @@ const app = Vue.createApp({
 			input.click();
 			input.onchange = (e) => {
 				that.inputFiles =  e.target.files;
-				console.log(e.target.files)
+			
 				that.fileVis =true;
 			};		
 		},
@@ -328,7 +367,7 @@ const app = Vue.createApp({
 		},
 		letReg(user){
 			that = this;
-			console.log('letreg')
+	
 			fetch('/letreg', {
 				method: 'POST',
 				headers: {
@@ -600,11 +639,12 @@ app.component('messag',{
 			fileData:  null,
 			menOpen :false,
 			messId: null,
+			editText: null,
 					
 		}
 	},
 	props:['users', 'currentUser','sound', 'history', 'currentreceptor' ],
-	emits:['new-mess',  'delete-mess', 'open-fl', ],
+	emits:['new-mess',  'delete-mess', 'open-fl', 'edit-mess'],
 	template: `<div >
 				<div  v-for="item in history" v-bind:key="item" v-bind:class=item.class>
 					<div class="mess-name">
@@ -612,7 +652,7 @@ app.component('messag',{
 						<p >{{item.message}}</p>
 						<div @click="download"  v-if="item.files!=null" class="mess-file" v-for="item1 in item.files"  v-bind:key="item1"> 
 							<img  src="./img/doc.png">
-							<p >{{item1}}</p>
+							<p>{{item1}}</p>
 						</div>
 					</div>
 					<div class="mess-time" >
@@ -620,15 +660,19 @@ app.component('messag',{
 						<p>{{item.date}}</p>
 					</div>
 					<div class="mess-menu" @click="openMenDiv" v-bind:id="item._id" >
-						<img src="./img/menuMess.png" class=" mess-menu-img" @click="openMenMenuImg">
+						<img src="./img/menuMess.png" class="mess-menu-img" @click="openMenMenuImg">
 					</div>
 					<div class="mess-click" >
+						<div class="mess-delete">
+							<img src="./img/editMess.png" class="sender-img" @click="editMess">
+						</div>
 						<div class="mess-repost">
 							<img src="./img/repost.png" class="sender-img" @click="repost">
 						</div>
 						<div class="mess-delete">
 							<img src="./img/delete.png" class="sender-img" @click="delmess">
 						</div>
+					
 					</div>
 				</div>
 				</div>
@@ -720,10 +764,11 @@ app.component('messag',{
 				}
 			} else{
 				if (this.messId!==''){	
-				//	console.log(e.target);
+					console.log(e.target.id);
 					let btn = document.getElementById(e.target.id)
-				//	console.log(btn)
+					console.log(btn)
 					let men = btn.nextSibling;
+					
 					men.style.display="none"
 					this.messId = e.target.id;	
 					this.menOpen=false;
@@ -763,8 +808,7 @@ app.component('messag',{
 		
 		},
 		delmess(e){
-			//console.log(this.messId)
-				
+						
 			if (this.messId!==''){
 				this.$emit('delete-mess', this.messId);
 				let btn = document.getElementById(this.messId);
@@ -800,6 +844,20 @@ app.component('messag',{
 				location.reload();
 			}
 			
+		},
+		editMess(){	
+				let btn = document.getElementById(this.messId);
+				let currMess = btn.parentNode ;
+				if(currMess.className=='mess-in'){
+					alert('Редактирвать сообщения других пользователей нельзя!')
+					return
+				}
+				currMess.classList.add('editMessage')
+				let text = currMess.querySelector('p')
+				this.$emit('edit-mess', {messId: this.messId, text: text.innerText});
+				let menu = currMess.querySelector('.mess-click')
+				menu.style.display="none"
+				this.menOpen=false;
 		}
 
 	},
@@ -852,7 +910,7 @@ app.component('messag',{
 		},
 		
 		openabout(){
-			console.log(this.favorite)
+			
 			this.$emit('open-about');
 		}
 	},
@@ -1064,18 +1122,18 @@ app.component('messag',{
 	
 			//формирование времени ----------------------------------------------------------------
 			let date  = Date.now();
-			console.log('date>>>', Date.now())
+		
 			let hours = new Date(date).getHours();
 			let minutes = new Date(date).getMinutes();
 			if (minutes<10) minutes = '0'+ minutes;
 			let day = new Date(date).getDate();
 			let month = new Date(date).getMonth() + 1;
 			let year = new Date(date).getFullYear();
-			console.log(year);
+		
 			let as1 ='' +year;
-			console.log(typeof(as1))
+		
 			let as2 = as1.slice(2)
-			console.log(as2)
+		
 			if (month<10) month = '0'+ month;
 			let time = `${hours}:${minutes}`;
 			let dete = `${day}.${month}.${as2}`;

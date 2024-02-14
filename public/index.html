@@ -70,7 +70,9 @@
 							<messag v-bind:currentUser="currentUser" v-if="currentUser!==null" v-bind:users="users" v-bind:sound="sound" 
 								v-bind:history="history"  @add-hist="addHist"
 								@new-mess="newmess" @delete-mess="deletemess" v-bind:currentreceptor="currentReceptor"
-								@choose-receptor="chooseReceptor" @open-fl="repost">
+								@choose-receptor="chooseReceptor"
+								@open-fl="repost"
+								@edit-mess="editmess">
 							</messag>
 							
 						</div>
@@ -85,7 +87,7 @@
 							</div>
 							<div class="sender-item textarea">
 								<img src="./img/preloader1.gif" class="preloder-img" v-if="preloder">
-								<textarea id="message" @keyup.enter="submit"  placeholder="Сообщение..."
+								<textarea id="message" @keyup.enter="submit"   v-model="messText" placeholder="Сообщение..."
 									class="textarea">
 
 								</textarea>
