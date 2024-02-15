@@ -545,7 +545,7 @@
     margin-top:auto;
     margin-bottom: auto;
     margin-left: 5px;
-    
+    white-space: pre-wrap; 
 }
 .mess-file:hover{
     text-decoration-line: underline;
