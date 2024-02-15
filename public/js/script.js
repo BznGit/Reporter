@@ -440,7 +440,7 @@ const app = Vue.createApp({
 					});
 					that.history = data;
 					lentaId.scrollTop==lentaId.scrollHeight;
-					console.log(that.history)
+					
 					
 				};			
 			}).then(()=>{
@@ -660,17 +660,17 @@ app.component('messag',{
 						<p>{{item.date}}</p>
 					</div>
 					<div class="mess-menu" @click="openMenDiv" v-bind:id="item._id" >
-						<img src="./img/menuMess.png" class="mess-menu-img" @click="openMenMenuImg">
+						<img src="./img/menuMess.png" class="mess-menu-img">
 					</div>
 					<div class="mess-click" >
 						<div class="mess-delete">
-							<img src="./img/editMess.png" class="sender-img" @click="editMess">
+							<img src="./img/editMess.png" class="sender-img" @click="editMess" title="Редактировать сообщение">
 						</div>
 						<div class="mess-repost">
-							<img src="./img/repost.png" class="sender-img" @click="repost">
+							<img src="./img/repost.png" class="sender-img" @click="repost" title="Переслать сообщение">
 						</div>
 						<div class="mess-delete">
-							<img src="./img/delete.png" class="sender-img" @click="delmess">
+							<img src="./img/delete.png" class="sender-img" @click="delmess" title="Удалить сообщение">
 						</div>
 					
 					</div>
@@ -746,67 +746,34 @@ app.component('messag',{
 		},
 
 		openMenDiv(e){
+			let mess = null;
+			e.target.tagName=='IMG'? mess = e.target.parentNode : mess  = e.target ;
+			let men = document.getElementById(mess.id)
+			this.messId = mess.id;
+			let menu = mess.nextSibling
+		
 			if (!this.menOpen){	
-				if (this.messId!==''){
-				//	console.log(e.target);
-					let btn = document.getElementById(e.target.id)
-				//	console.log(btn)
-					let men = btn.nextSibling;
-					men.style.display="flex"
-					this.messId = e.target.id;
+				if (this.messId){				
+					menu.style.display = 'flex';
 					this.menOpen=true;
 				} else {
-					let btn = e.target;
-					let men = btn.nextSibling;
-					men.style.display="flex"
-					this.messId = e.target.id;
+					menu.style.display = 'flex';
 					this.menOpen=true;
 				}
 			} else{
-				if (this.messId!==''){	
-					console.log(e.target.id);
-					let btn = document.getElementById(e.target.id)
-					console.log(btn)
-					let men = btn.nextSibling;
-					
-					men.style.display="none"
-					this.messId = e.target.id;	
+				if (this.messId){
+					this.messId = null;
+					menu.style.display = 'none';
 					this.menOpen=false;
 				}else{
-					let btn = e.target;
-					let men = btn.nextSibling;
-					men.style.display="none"
-					this.messId = e.target.id;
+					menu.style.display = 'none';
+					this.messId = null;
 					this.menOpen=false;
 				}
 			} 
 			
 		},
-		openMenMenuImg(e){
-			
-			if (!this.menOpen){	
-				let img = e.target;
-				//console.log(img)
-				let bt = img.parentElement;
-			//	console.log(bt)
-				let men = bt.nextSibling;
-				this.messId = bt.id;
-				
-				men.style.display="flex"
-				this.menOpen=true;
-			} else{
-				let img = e.target;
-				//console.log(img)
-				let bt = img.parentElement;
-			//	console.log(bt)
-				let men = bt.nextSibling;
-				men.style.display="none"
-				this.messId = bt.id;
-				
-				this.menOpen=false;
-			}
-		
-		},
+
 		delmess(e){
 						
 			if (this.messId!==''){

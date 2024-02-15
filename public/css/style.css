@@ -577,11 +577,11 @@
 }
 
 .mess-click{
+    display: none;
     position: absolute;
     left: 98%;
     top: -16px;
     align-items: center;
-    display: none;
     flex-direction:  column;
     justify-content:space-between;
     width: 50px;
