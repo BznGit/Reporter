@@ -807,7 +807,11 @@ app.component('messag',{
 				alert('Для пересылки этого сообщения страница будет перезагружена, затем повторите попытку еще раз!')
 				location.reload();
 			}
-			
+			if(this.menOpen){
+				let mn = document.querySelectorAll('.mess-click')
+				mn.forEach(item=>item.style.display="none")
+				this.menOpen = false
+			}
 		},
 		editMess(){	
 				let btn = document.getElementById(this.messId);
