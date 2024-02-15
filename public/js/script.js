@@ -2,6 +2,7 @@ console.log("it's ok");
 var socket =  io.connect(location.origin);
 let object= null;
 let sendId = null;	
+
 const events = ['dragenter', 'dragover', 'dragleave', 'drop', 'dragstart', 'dragend']
 function preventDefaults(e) {
     e.preventDefault()
@@ -640,6 +641,7 @@ app.component('messag',{
 			menOpen :false,
 			messId: null,
 			editText: null,
+			
 					
 		}
 	},
@@ -671,6 +673,9 @@ app.component('messag',{
 						</div>
 						<div class="mess-delete">
 							<img src="./img/delete.png" class="sender-img" @click="delmess" title="Удалить сообщение">
+						</div>
+						<div class="mess-delete">
+							<img style="width: 25px" src="./img/closeBlue.png" class="sender-img" @click="close" title="Закрыть меню">
 						</div>
 					
 					</div>
@@ -746,36 +751,28 @@ app.component('messag',{
 		},
 
 		openMenDiv(e){
+			if(this.menOpen){
+				let mn = document.querySelectorAll('.mess-click')
+				mn.forEach(item=>item.style.display="none")
+				this.menOpen = false
+			}
+	
 			let mess = null;
 			e.target.tagName=='IMG'? mess = e.target.parentNode : mess  = e.target ;
-			let men = document.getElementById(mess.id)
 			this.messId = mess.id;
 			let menu = mess.nextSibling
-		
-			if (!this.menOpen){	
-				if (this.messId){				
-					menu.style.display = 'flex';
-					this.menOpen=true;
-				} else {
-					menu.style.display = 'flex';
-					this.menOpen=true;
-				}
-			} else{
-				if (this.messId){
-					this.messId = null;
-					menu.style.display = 'none';
-					this.menOpen=false;
-				}else{
-					menu.style.display = 'none';
-					this.messId = null;
-					this.menOpen=false;
-				}
-			} 
+
+			if (this.messId){				
+				menu.style.display = 'flex';
+				this.menOpen = true;
+			} else {
+				menu.style.display = 'flex';
+				this.menOpen = true;
+			}
 			
 		},
 
-		delmess(e){
-						
+		delmess(e){				
 			if (this.messId!==''){
 				this.$emit('delete-mess', this.messId);
 				let btn = document.getElementById(this.messId);
@@ -825,6 +822,13 @@ app.component('messag',{
 				let menu = currMess.querySelector('.mess-click')
 				menu.style.display="none"
 				this.menOpen=false;
+		},
+		close(){
+			if(this.menOpen){
+				let mn = document.querySelectorAll('.mess-click')
+				mn.forEach(item=>item.style.display="none")
+				this.menOpen = false
+			}
 		}
 
 	},

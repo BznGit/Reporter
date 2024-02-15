@@ -583,11 +583,15 @@
     top: -16px;
     align-items: center;
     flex-direction:  column;
-    justify-content:space-between;
+
     width: 50px;
  
-  
 }
+
+.mess-click-row{
+    flex-direction: row;
+}
+
 .mess-repost{
     display: flex;
     width: 50%;
