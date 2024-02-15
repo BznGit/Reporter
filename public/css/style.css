@@ -580,8 +580,9 @@
     display: none;
     position: absolute;
     padding: 4px;
-    left: 101%;
-    top: -37px;
+    left: 106%;
+    top: 50%;
+    transform:translate(-50%,-50%);
     align-items: center;
     justify-content: center;
     flex-direction:  column;
