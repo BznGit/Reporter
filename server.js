@@ -468,7 +468,7 @@ io.on('connection', function (socket){
 		
 
 	});
-	setInterval(()=>{ io.emit('active', rooms);},10000)	
+	setInterval(()=>{ io.emit('active', rooms);}, 10000)	
 	socket.on('bye', function (data){
 
 		let actUser = rooms.find(item=>item.senderId == data.senderId)

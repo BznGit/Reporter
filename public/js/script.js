@@ -668,14 +668,14 @@ app.component('messag',{
 						<div class="mess-delete">
 							<img src="./img/editMess.png" class="sender-img" @click="editMess" title="Редактировать сообщение">
 						</div>
-						<div class="mess-repost">
+						<div class="mess-delete">
 							<img src="./img/repost.png" class="sender-img" @click="repost" title="Переслать сообщение">
 						</div>
 						<div class="mess-delete">
 							<img src="./img/delete.png" class="sender-img" @click="delmess" title="Удалить сообщение">
 						</div>
 						<div class="mess-delete">
-							<img style="width: 25px" src="./img/closeBlue.png" class="sender-img" @click="close" title="Закрыть меню">
+							<img  src="./img/closeBlue.png" class="sender-img" @click="close" title="Закрыть меню">
 						</div>
 					
 					</div>
