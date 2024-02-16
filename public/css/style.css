@@ -733,8 +733,10 @@
     word-wrap:initial;
     overflow-wrap: break-word;
     align-items: center;
-     width: 100%;
+    width: 100%;
+
     resize: none;
+    overflow:visible
 }
 
 

@@ -69,7 +69,7 @@
 						<div  class="lenta" @scroll="onScroll" id="lentaId"  >
 							<messag v-bind:currentUser="currentUser" v-if="currentUser!==null" v-bind:users="users" v-bind:sound="sound" 
 								v-bind:history="history"  @add-hist="addHist"
-								@new-mess="newmess" @delete-mess="deletemess" v-bind:currentreceptor="currentReceptor"
+								@new-mess="newmess" @delete-mess="deletemess" v-bind:currentreceptor="currentReceptor" v-bind:editmessid = "editMessId"
 								@choose-receptor="chooseReceptor"
 								@open-fl="repost"
 								@edit-mess="editmess">

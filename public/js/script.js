@@ -202,6 +202,7 @@ const app = Vue.createApp({
 			currMess.classList.remove('editMessage')
 			let text = currMess.querySelector('p')
 			text.innerText = this.messText;
+
 			let editmess ={
 				id: this.editMessId,
 				userId: this.currentUser._id,
@@ -437,7 +438,7 @@ const app = Vue.createApp({
 				//	console.log(that.currentUser.name);
 					data.forEach(function(item){
 						if (item.senderId!==that.currentUser._id) item.class = "mess-in"; else item.class = "mess-out" 
-					
+						console.log(item.message);
 					});
 					that.history = data;
 					lentaId.scrollTop==lentaId.scrollHeight;
@@ -645,7 +646,7 @@ app.component('messag',{
 					
 		}
 	},
-	props:['users', 'currentUser','sound', 'history', 'currentreceptor' ],
+	props:['users', 'currentUser','sound', 'history', 'currentreceptor', 'editmessid' ],
 	emits:['new-mess',  'delete-mess', 'open-fl', 'edit-mess'],
 	template: `<div >
 				<div  v-for="item in history" v-bind:key="item" v-bind:class=item.class>
@@ -751,6 +752,8 @@ app.component('messag',{
 		},
 
 		openMenDiv(e){
+			
+			if(this.editmessid) return
 			if(this.menOpen){
 				let mn = document.querySelectorAll('.mess-click')
 				mn.forEach(item=>item.style.display="none")
