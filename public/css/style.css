@@ -439,6 +439,7 @@
 .lenta{
     position: relative;
     display: block;
+    padding-top: 13px;
     background-color: white;
     height: 85%;
     width: 100%; 
@@ -871,6 +872,7 @@
         border-width: 0;
         margin: 0;
         padding: 0;
+     
     }
     .content{
         display: flex;
