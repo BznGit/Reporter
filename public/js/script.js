@@ -3,6 +3,7 @@ var socket =  io.connect(location.origin);
 let object= null;
 let sendId = null;	
 
+
 const events = ['dragenter', 'dragover', 'dragleave', 'drop', 'dragstart', 'dragend']
 function preventDefaults(e) {
     e.preventDefault()
@@ -588,6 +589,7 @@ const app = Vue.createApp({
 		},
 	}, 
 	mounted(){
+
 		events.forEach((eventName) => {
 			document.body.addEventListener(eventName, preventDefaults)
 		})
@@ -652,7 +654,7 @@ app.component('messag',{
 				<div  v-for="item in history" v-bind:key="item" v-bind:class=item.class>
 					<div class="mess-name">
 						<h4>{{item.person}}</h4>
-						<p >{{item.message}}</p>
+						<p>{{item.message}}</p>
 						<div @click="download"  v-if="item.files!=null" class="mess-file" v-for="item1 in item.files"  v-bind:key="item1"> 
 							<img  src="./img/doc.png">
 							<p>{{item1}}</p>

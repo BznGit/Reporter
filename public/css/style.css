@@ -507,6 +507,7 @@
     margin-bottom: 10px;
 	overflow-wrap: anywhere;
 	text-align: justify;
+    white-space: pre-wrap;
 
 }
 
