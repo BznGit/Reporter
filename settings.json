@@ -1,7 +1,7 @@
 {
     "callBoard" :    {
         "name":"ОБЪЯВЛЕНИЯ",
-        "login": "board",
+        "login": "bord",
         "password":"gimler"
 
     },
