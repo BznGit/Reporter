@@ -8,24 +8,20 @@ const { response } = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-var board = require('./settings.json')
-
-var collboardId = null; 
+var settings = require('./settings.json')
 var url = 'mongodb://localhost:27017';
 var mongoClient = require('mongodb').MongoClient;
-
+var collboardId = null
 fs.stat('uploads', function(err) {
     if (!err) {
-        console.log('[upoads] directory exists');
+        console.log('Directory [ upoads ] allready exists');
     }
     else if (err.code === 'ENOENT') {
-        console.log('[upoads] directory not exists');
 		fs.mkdir('uploads', (err) => {
 			if (err) {
 			  console.error(err);
-			} else {
-			  console.log('[upoads] directory created successfully!');
-			}
+			} else  console.log('Directory [upoads] created successfully');
+			
 		  });
     }
 });
@@ -34,25 +30,33 @@ mongoClient.connect(url, function(err, dbs) {
 	var db = dbs.db('messeger');
 	if(err) return console.log(err);
 
-	let callboard = {
-		name:board.callBoardName,
-		password:board.password
-	}
+	let callboard =settings.callBoard;
+	let storage =settings.storage;
+
 	var collection = db.collection("users");
-	//поиск без параметров
-	collection.find({name:board.callBoardName}).toArray((err, results)=>{
-		if (results.length == 0){
-			collection.insertMany([callboard],(err, result)=>{
+
+	collection.findOne({login: callboard.login},(err, result)=>{
+		if (!result){
+			collection.insertOne(callboard,(err, result)=>{
 				collboardId = callboard._id; 
 				dbs.close();
+				console.log(`User [ ${callboard.name} ] created successfully`)
 			});	
 		} else{
-			collboardId = results[0]._id;
+			collboardId = result._id; 
+			console.log(`User [ ${callboard.name} ] allready exists`)
+		} 	
+	});
+
+	collection.findOne({login: storage.login},(err, result)=>{
+		if (!result){
+			collection.insertOne(storage,(err, result)=>{
+				dbs.close();
+				console.log(`User [ ${storage.name} ] created successfully`)
+			});	
+		} else console.log(`User [ ${storage.name} ] allready exists`)
 			
-		} 
-	})
-
-
+	});
 });
 
 app.use(bodyParser.json());

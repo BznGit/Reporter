@@ -1,4 +1,14 @@
 {
-    "callBoardName":"ОБЪЯВЛЕНИЯ",
-    "password":"gimler"
+    "callBoard" :    {
+        "name":"ОБЪЯВЛЕНИЯ",
+        "login": "board",
+        "password":"gimler"
+
+    },
+    "storage" :    {
+        "name":"ХРАНИЛИЩЕ",
+        "login": "host",
+        "password":"gimler"
+
+    }
 }

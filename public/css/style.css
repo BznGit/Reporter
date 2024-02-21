@@ -72,6 +72,18 @@
 .logHightEdit{
     height: 440px;
 }
+.logabout{
+    height: max-content;
+    width: 270px;
+}
+.logabout>p{
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+   
+    text-align: justify;
+   
+}
 .vhod{
     margin-top: 10px;
     margin-left: 15px;

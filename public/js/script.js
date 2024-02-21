@@ -439,7 +439,7 @@ const app = Vue.createApp({
 				//	console.log(that.currentUser.name);
 					data.forEach(function(item){
 						if (item.senderId!==that.currentUser._id) item.class = "mess-in"; else item.class = "mess-out" 
-						console.log(item.message);
+					
 					});
 					that.history = data;
 					lentaId.scrollTop==lentaId.scrollHeight;
@@ -777,8 +777,10 @@ app.component('messag',{
 			
 		},
 
-		delmess(e){				
+		delmess(e){		
+		
 			if (this.messId!==''){
+
 				this.$emit('delete-mess', this.messId);
 				let btn = document.getElementById(this.messId);
 				let currMess = btn.parentNode ;
@@ -853,7 +855,7 @@ app.component('messag',{
 					<h4 @click="openlog">{{tet}}</h4>
 					<h4 @click="favoriteAdd" v-if="!existfav && currrecept">Добавить контакт в избранное</h4>
 					<h4 @click="favoriteDel" v-if="existfav && favorite">Удалить контакт из избранного</h4>
-					<h4 @click="delHist" v-if="currrecept">Отчистить историю</h4>
+					<h4 @click="delHist" v-if="currrecept">Очистить историю</h4>
 					<h4 @click="openEdit" v-if="curruser">Редактировать свой аккаунт</h4>
 					<h4 @click="delAcc" v-if="curruser">Удалить свой аккаунт</h4>
 					<h4 @click="openabout">О нас</h4>				
@@ -1202,11 +1204,11 @@ app.component('messag',{
  app.component('about',{
 	emits:['close-about'],
 	template: `
-				<div class="log">
+				<div class="log logabout">
 					<div class="log-cont-img">
 						<img class="log-img" @click="close" src="./img/close.png">
 					</div>
-					<div class="log-inputs">
+					<div class="log-inputs logabout">
 						<h1 style="font-family: Aharoni"></h1>
 						<br>
 						<br>
@@ -1214,7 +1216,13 @@ app.component('messag',{
 						<h3>2024</h3>
 						<br>
 						<br>				
-						<h4>Version 2.0.1 </h4>
+						<h4>Version 2.0.2 </h4>
+						<br>
+						<p>
+							1) Появилась возможность прикрепления файлов к сообщению (отправка) простым перетаскиванием их в область мессенджера.<br>
+							2) Появилась возможность редактирования уже отправленных сообщений.<br>
+							3) Появилась возможность принудительно переносить строку в сообщении нажатием клавиши [ Enter ].<br>
+						</p>
 					</div>					
 				</div>
 				`,
