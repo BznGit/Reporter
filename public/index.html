@@ -22,7 +22,7 @@
 			<div @dragenter="dragenter" @drop.prevent="dragleave"   @dragleave.prevent="dragleave">
 
 			
-			<div class=mainapp >
+			<div class="mainapp" >
 				<login @close-login="loginVis=false" @let-sigin="signin" @let-exit="letexit"
 					@open-reg="regVis=!regVis; loginVis=!loginVis" v-bind:loginvis="loginVis"
 					v-bind:curruser="currentUser">
@@ -128,9 +128,9 @@
 				</div>
 			</div>
 		</div>
-		<div id="assid"class="dropzone" v-show="dropVis" @drop.prevent="drop" @dragleave.prevent="dragleave1" @dragenter="dragenter1" >
-			<h3>Перетащите сюда свои файлы</h3>
-			<img class="imgDoc" id="docImgId" src="./img/doc.png">
+		<div id="assid" class="dropzone" v-show="dropVis" @drop.prevent="drop" @dragleave.prevent="dragleave1" @dragenter="dragenter1" >
+			<h3 >Перетащите сюда свои файлы</h3>
+			<img  class="imgDoc" id="docImgId" src="./img/doc.png"  >
 		</div>
 		</div>
 		<script src="./js/script.js"></script>

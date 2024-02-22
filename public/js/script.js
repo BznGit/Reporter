@@ -53,20 +53,19 @@ const app = Vue.createApp({
 			let img = document.getElementById('docImgId') 
 			img.classList.add('himg')
 		},	
-		dragleave1(){
-		
+	
+		dragleave1(e){
 			let elem = document.getElementById('assid') 
+			if (elem.contains(e.relatedTarget)) return;
 			elem.classList.remove('hover')
 			let img = document.getElementById('docImgId') 
 			img.classList.remove('himg')
 			this.dragenterBool = false;
 		
 		},
-		dragenter(){
 
-			//if(this.dragenterBool) return
-			this.dropVis = true;	
-		
+		dragenter(){
+			this.dropVis = true;			
 		},
 		dragleave(){
 		
@@ -415,8 +414,8 @@ const app = Vue.createApp({
 		},
 		chooseReceptor(receptor){
 			//console.log(receptor, this.currentReceptor)
-			if (!that.currentUser.hasOwnProperty('favorite')) that.currentUser.favorite = [];
 			that=this;	
+			if (!that.currentUser.hasOwnProperty('favorite')) that.currentUser.favorite = [];
 			that.history=[];
 			this.currentReceptor = this.users.find(item=>item._id == receptor);
 			this.existFav = this.currentUser.favorite.includes(this.currentReceptor._id)
