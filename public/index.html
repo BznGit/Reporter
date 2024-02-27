@@ -89,9 +89,14 @@
 							</div>
 							<div class="sender-item textarea">
 								<img src="./img/preloader1.gif" class="preloder-img" v-if="preloder">
-								<textarea id="message"    v-model="messText" placeholder="Сообщение..."
+								<textarea id="message"  
+									v-model="messText"
+									title="Перенос сторки - [CTRL] + [ENTER], отправка сообщения - [ENTER]"
+									placeholder="Сообщение..."
+									@keydown.enter.prevent.exact="submit"
+      								@keyup.ctrl.enter.prevent="newLine"
 									class="textarea">
-
+									
 								</textarea>
 								<div v-if="fileVis" class="sender-item-file">
 									<div class="sender-item-file-col">

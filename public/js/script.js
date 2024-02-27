@@ -45,7 +45,13 @@ const app = Vue.createApp({
 		}
 	},
 	methods:{
-
+		newLine(e) {
+			
+			let caret = e.target.selectionStart;
+			console.log(caret)
+			e.target.setRangeText("\n", caret, caret, "end");
+			this.messText = e.target.value;
+		  },
 		dragenter1(){
 			let elem = document.getElementById('assid') 
 			elem.classList.add('hover')
@@ -329,6 +335,7 @@ const app = Vue.createApp({
 			let textarea = document.getElementById('message');
 			textarea.value='';	
 			this.sendToAll = false;
+			this.messText  = null
 			
 		},
 		addFile(){
@@ -1215,12 +1222,14 @@ app.component('messag',{
 						<h3>2024</h3>
 						<br>
 						<br>				
-						<h4>Version 2.0.2 </h4>
+						<h4>Version 2.0.3 </h4>
 						<br>
 						<p>
 							1) Появилась возможность прикрепления файлов к сообщению (отправка) простым перетаскиванием их в область мессенджера.<br>
 							2) Появилась возможность редактирования уже отправленных сообщений.<br>
-							3) Появилась возможность принудительно переносить строку в сообщении нажатием клавиши [ Enter ].<br>
+							3) Появилась возможность принудительно переносить строку в сообщении нажатием клавиши [CTRL] + [ENTER].<br>
+							4) Появилась возможность отправить сообщение нажатием клавиши [ENTER].
+							<br>
 						</p>
 					</div>					
 				</div>
