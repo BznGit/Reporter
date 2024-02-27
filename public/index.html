@@ -91,7 +91,7 @@
 								<img src="./img/preloader1.gif" class="preloder-img" v-if="preloder">
 								<textarea id="message"  
 									v-model="messText"
-									title="Перенос сторки - [CTRL] + [ENTER], отправка сообщения - [ENTER]"
+									title="Перенос строки - [CTRL] + [ENTER], отправка сообщения - [ENTER]"
 									placeholder="Сообщение..."
 									@keydown.enter.prevent.exact="submit"
       								@keyup.ctrl.enter.prevent="newLine"
