@@ -449,6 +449,7 @@
     width: 100%;
 
 }
+
 .lenta{
     position: relative;
     display: block;
@@ -457,7 +458,8 @@
     height: 85%;
     width: 100%; 
     overflow:auto; 
-
+    
+    
 }
 
 .hover2{
@@ -467,8 +469,23 @@
     display: none;
     
 }
-
-
+.lenta::-webkit-scrollbar {
+    width: 12px;               /* ширина всей полосы прокрутки */
+  }
+  
+  .lenta::-webkit-scrollbar-track {
+    background: white;        /* цвет зоны отслеживания */
+  }
+  
+  .lenta::-webkit-scrollbar-thumb {
+    background-color: steelblue;    /* цвет бегунка */
+    border-radius: 20px;       /* округлось бегунка */
+    border: 3px solid white;  /* отступ вокруг бегунка */
+  }
+  .lenta {
+    scrollbar-width: thin;          /* "auto" или "thin" */
+    scrollbar-color: steelblue white;   /* цвет бегунка и зоны отслеживания */
+  }
 .mess-out{
     display: flex;
     position: relative;
