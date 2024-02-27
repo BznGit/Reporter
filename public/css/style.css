@@ -456,7 +456,7 @@
     background-color: white;
     height: 85%;
     width: 100%; 
-    overflow:hidden; 
+    overflow:auto; 
 
 }
 
@@ -466,11 +466,8 @@
 .lenta-vis{
     display: none;
     
-    
 }
-.lenta:hover{
-    overflow:auto;
-}
+
 
 .mess-out{
     display: flex;
