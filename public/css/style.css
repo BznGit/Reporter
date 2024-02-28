@@ -593,7 +593,7 @@
     justify-content: center;
     align-content: center;
     width: 30px;
-    z-index: 100;
+  
 }
 .mess-menu:hover{
     transform: scale(1.2);
