@@ -574,14 +574,22 @@ const app = Vue.createApp({
 		},
 		curUsSymb(){
 			if (this.currentUser!==null){
-				
 				return this.currentUser.name[0]
 			}
 		}, 
 		curRecSymb(){
 			if (this.currentReceptor!==null){
-				
 				return this.currentReceptor.name[0]
+			}
+		},
+		curRecName(){
+			if (this.currentReceptor!==null){
+				return this.currentReceptor.name
+			}
+		},
+		curUserName(){
+			if (this.currentUser!==null){
+				return this.currentUser.name
 			}
 		},
 		fileName(){
@@ -670,7 +678,7 @@ app.component('messag',{
 						<p>{{item.time}}</p>
 						<p>{{item.date}}</p>
 					</div>
-					<div class="mess-menu" @click="openMenDiv" v-bind:id="item._id" >
+					<div class="mess-menu" @click="openMenDiv" v-bind:id="item._id" title="Меню">
 						<img src="./img/menuMess.png" class="mess-menu-img">
 					</div>
 					<div class="mess-click" >

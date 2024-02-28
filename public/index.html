@@ -45,7 +45,7 @@
 						<h3>Reporter</h3>
 					</div>
 					<div class="head-contact" @click="sorty" title="Текущий пользователь">
-						<h3 v-html="currentName"></h3>
+						<h3 v-html="currentName"  ></h3>
 					</div>
 					<div class="head-search" @click="favoriteHandler" title="Показать избранное">
 						<img class="head-search-img" v-bind:src="favoriteStat">
@@ -85,7 +85,7 @@
 								</div>
 							<div class="sender-item avat1">
 							
-								<span id="avatar1" v-html="curUsSymb"></span>
+								<span id="avatar1" v-html="curUsSymb" :title="curUserName"></span>
 							</div>
 							<div class="sender-item textarea">
 								<img src="./img/preloader1.gif" class="preloder-img" v-if="preloder">
@@ -115,14 +115,14 @@
 							</div>
 							<div class="sender-item send">
 								<div class="sender-send">
-									<img class="sender-img" @click="submit" src="./img/send.png" title="Отправить">
+									<img class="sender-img" @click="submit" src="./img/send.png" title="Отправить сообщение">
 								</div>
 								<div class="sender-all">
 									<img class="sender-img" @click="sendToAll=!sendToAll" v-bind:src="allstat" title="Разослать всем">
 								</div>
 							</div>
 							<div class="sender-item avat2">
-								<span id="avatar2" v-html="curRecSymb"></span>
+								<span id="avatar2" v-html="curRecSymb" :title="curRecName"></span>
 							</div>
 						</div>
 					</div>
