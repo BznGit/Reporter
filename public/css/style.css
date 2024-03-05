@@ -344,6 +344,23 @@
     z-index: 1000;
  
 }
+.contacts::-webkit-scrollbar {
+    width: 12px;               /* ширина всей полосы прокрутки */
+  }
+  
+  .contacts::-webkit-scrollbar-track {
+    background: white;        /* цвет зоны отслеживания */
+  }
+  
+  .contacts::-webkit-scrollbar-thumb {
+    background-color: steelblue;    /* цвет бегунка */
+    border-radius: 20px;       /* округлось бегунка */
+    border: 3px solid white;  /* отступ вокруг бегунка */
+  }
+  .contacts {
+    scrollbar-width: thin;          /* "auto" или "thin" */
+    scrollbar-color: steelblue white;   /* цвет бегунка и зоны отслеживания */
+  }
 .contacts:hover{
     overflow-y:auto;
 }
@@ -917,9 +934,10 @@
         background-color: white;
         height: 100%;
         border-right:0px solid steelblue;
-        overflow:hidden; 
+        overflow:auto; 
      
     }
+
     .contacts-vis{
         display: block;
         flex-direction: column;
