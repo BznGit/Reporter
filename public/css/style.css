@@ -505,7 +505,7 @@
 .mess-out{
     display: flex;
     position: relative;
-    flex-direction: row;
+    flex-direction: column;
     background-color:  rgb(157, 226, 172);
     padding: 10px;
     margin: 15px;
@@ -519,7 +519,7 @@
 .mess-in{
     display: flex;
     position: relative;
-    flex-direction: row;
+    flex-direction: column;
     background-color:  rgb(238, 155, 155); 
     padding: 12px;
     margin: 15px;
@@ -529,6 +529,23 @@
     width: 60%;
     height: min-content;
   
+}
+.mess-row{
+    display: flex;
+    flex-direction: row;
+
+}
+.mess-check{
+    display: flex;
+   
+    flex-direction: row;
+   justify-content: end;
+}
+.mess-check>p{
+    color: steelblue;
+    font-size: smaller;
+    margin-right: 5px;
+    align-self: self-end;
 }
 .editMessage{
     background-color: white;
@@ -566,8 +583,13 @@
     margin-left: 10px;
     margin-right: 5px;
     font-weight: bolder;
-    margin-bottom: 10px;
+  
     
+}
+.mess-time-img{
+    
+    width: 18px;
+
 }
 .mess-time>p{
     margin-right: 0;

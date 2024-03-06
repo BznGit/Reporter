@@ -664,39 +664,49 @@ app.component('messag',{
 	},
 	props:['users', 'currentUser','sound', 'history', 'currentreceptor', 'editmessid' ],
 	emits:['new-mess',  'delete-mess', 'open-fl', 'edit-mess'],
-	template: `<div >
-				<div  v-for="item in history" v-bind:key="item" v-bind:class=item.class>
-					<div class="mess-name">
-						<h4>{{item.person}}</h4>
-						<p>{{item.message}}</p>
-						<div @click="download"  v-if="item.files!=null" class="mess-file" v-for="item1 in item.files"  v-bind:key="item1"> 
-							<img  src="./img/doc.png">
-							<p>{{item1}}</p>
+	template: `<div>
+					<div  v-for="item in history" v-bind:key="item" v-bind:class=item.class>
+					<div class="mess-row">
+						<div class="mess-name">
+							<h4>{{item.person}}</h4>
+							<p>{{item.message}}</p>
+							<div @click="download"  v-if="item.files!=null" class="mess-file" v-for="item1 in item.files"  v-bind:key="item1"> 
+								<img  src="./img/doc.png">
+								<p>{{item1}}</p>
+							</div>
+						</div>
+						<div class="mess-time" >
+							<p>{{item.time}}</p>
+							<p>{{item.date}}</p>
+							
+						</div>
+						<div class="mess-menu" @click="openMenDiv" v-bind:id="item._id" title="Меню">
+							<img src="./img/menuMess.png" class="mess-menu-img">
+						</div>
+						<div class="mess-click" >
+							<div class="mess-delete">
+								<img src="./img/editMess.png" class="sender-img" @click="editMess" title="Редактировать сообщение">
+							</div>
+							<div class="mess-delete">
+								<img src="./img/repost.png" class="sender-img" @click="repost" title="Переслать сообщение">
+							</div>
+							<div class="mess-delete">
+								<img src="./img/delete.png" class="sender-img" @click="delmess" title="Удалить сообщение">
+							</div>
+							<div class="mess-delete">
+								<img  src="./img/closeBlue.png" class="sender-img" @click="close" title="Закрыть меню">
+							</div>
+						</div>
+						</div>
+						<div class="mess-check">
+							<p>edited</p>
+							<div>	
+								<img class="mess-time-img" src="./img/readed.png">
+								<img class="mess-time-img" src="./img/sended.png">
+							</div>
 						</div>
 					</div>
-					<div class="mess-time" >
-						<p>{{item.time}}</p>
-						<p>{{item.date}}</p>
-					</div>
-					<div class="mess-menu" @click="openMenDiv" v-bind:id="item._id" title="Меню">
-						<img src="./img/menuMess.png" class="mess-menu-img">
-					</div>
-					<div class="mess-click" >
-						<div class="mess-delete">
-							<img src="./img/editMess.png" class="sender-img" @click="editMess" title="Редактировать сообщение">
-						</div>
-						<div class="mess-delete">
-							<img src="./img/repost.png" class="sender-img" @click="repost" title="Переслать сообщение">
-						</div>
-						<div class="mess-delete">
-							<img src="./img/delete.png" class="sender-img" @click="delmess" title="Удалить сообщение">
-						</div>
-						<div class="mess-delete">
-							<img  src="./img/closeBlue.png" class="sender-img" @click="close" title="Закрыть меню">
-						</div>
-					
-					</div>
-				</div>
+				
 				</div>
 				`,
 	created(){
