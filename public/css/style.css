@@ -542,14 +542,14 @@
    justify-content: end;
 }
 .mess-check>p{
-    color: steelblue;
+    color: rgb(58, 106, 146);
     font-size: smaller;
     margin-right: 5px;
     align-self: self-end;
 }
 .editMessage{
     background-color: white;
-    border: 2px solid steelblue;
+    border: 2px solid rgb(58, 106, 146);
 }
 
 .mess-name{

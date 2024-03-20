@@ -304,9 +304,9 @@ app.post('/delhist', function(reg, res, next){
 	var o_id = new ObjectID(reg.cookies.ass); 
 	//var mongoClient = require('mongodb').MongoClient;
 	var url = 'mongodb://localhost:27017';
-	if(o_id !=collboardId){
+	if(histQuery.who == collboardId){
 	
-		res.send("Вы не можете удалить!");
+		res.send("Вы не можете удалить историю объявлений. Обратитесь к администратору.");
 		res.end();
 		return
 	}
